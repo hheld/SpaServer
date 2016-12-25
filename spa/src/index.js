@@ -9,10 +9,12 @@ require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
 var Elm = require('./Main.elm');
 var mountNode = document.getElementById('app-container');
 
-var app = Elm.Main.embed(mountNode);
+var app = Elm.Main.embed(mountNode, {
+    csrfToken: getCookieValue('Csrf-token')
+});
 
-app.ports.getCookieValue.subscribe((cookie) => {
+function getCookieValue(cookie) {
     const re = new RegExp('(?:^' + cookie + '|;\s*' + cookie + ')=(.*?)(?:;|$)', 'g');
     const value = re.exec(document.cookie);
-    app.ports.newCookieValue.send([cookie, value===null ? '' : value[1]]);
-});
+    return value===null ? '' : value[1];
+}

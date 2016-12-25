@@ -9,14 +9,22 @@ import Routing
 import View exposing (view)
 
 
-init : Navigation.Location -> ( Model, Cmd Msg )
-init location =
+type alias Flags =
+    { csrfToken : String
+    }
+
+
+init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
+init flags location =
     let
         currentRoute =
             Url.parseHash Routing.route location
 
         currentModel =
             initialModel currentRoute
+
+        dbg =
+            Debug.log "init" flags
     in
         currentModel ! []
 
@@ -34,9 +42,9 @@ subscriptions model =
 -- Main
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    Navigation.program UrlChange
+    Navigation.programWithFlags UrlChange
         { init = init
         , view = view
         , update = update

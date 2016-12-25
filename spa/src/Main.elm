@@ -7,8 +7,6 @@ import Update exposing (update)
 import Model exposing (Model, initialModel)
 import Routing
 import View exposing (view)
-import Js exposing (newCookieValue, getCookieValue)
-import Navigation.Messages exposing (NavigationMsg(..))
 
 
 init : Navigation.Location -> ( Model, Cmd Msg )
@@ -19,12 +17,8 @@ init location =
 
         currentModel =
             initialModel currentRoute
-
-        getCsrfTokenFromCookie : Cmd Msg
-        getCsrfTokenFromCookie =
-            getCookieValue "Csrf-token"
     in
-        currentModel ! [ getCsrfTokenFromCookie ]
+        currentModel ! []
 
 
 
@@ -33,7 +27,7 @@ init location =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.map MsgForCookie (newCookieValue Messages.OnCookieValue)
+    Sub.none
 
 
 
@@ -42,7 +36,7 @@ subscriptions model =
 
 main : Program Never Model Msg
 main =
-    Navigation.program (\l -> MsgForNavigation <| UrlChange l)
+    Navigation.program UrlChange
         { init = init
         , view = view
         , update = update

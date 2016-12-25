@@ -1,12 +1,11 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text)
+import Html exposing (Html, div)
 import Model exposing (Model)
 import Messages exposing (Msg)
 import Routing exposing (Route(..))
-import Views.Login exposing (loginPage)
-import Views.HomePage exposing (homePage)
-import Views.NotFoundPage exposing (notFoundPage)
+import Home.View exposing (homePage)
+import NotFoundPage.View exposing (notFoundPage)
 
 
 view : Model -> Html Msg
@@ -21,7 +20,7 @@ page model =
             homePage model
 
         Just LoginRoute ->
-            loginPage model.user
+            homePage model
 
         Nothing ->
             notFoundPage model

@@ -53,13 +53,11 @@ func addUserInfo(next http.Handler) http.Handler {
 		}
 
 		if token == nil {
-			err = errors.New("No authorization token specified!")
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
 
 		if !token.Valid {
-			err = errors.New("Token is not valid!")
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
@@ -67,7 +65,6 @@ func addUserInfo(next http.Handler) http.Handler {
 		claims := token.Claims
 
 		if int64(claims.(jwt.MapClaims)["exp"].(float64)) < time.Now().Unix() {
-			err = errors.New("Token expired!")
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
@@ -84,7 +81,7 @@ func addUserInfo(next http.Handler) http.Handler {
 		extractUserPropList := func(userProp string) []string {
 			rolesAsInterface := userInfoFromClaims.(map[string]interface{})[userProp].([]interface{})
 
-			var roles []string = make([]string, len(rolesAsInterface))
+			var roles = make([]string, len(rolesAsInterface))
 
 			for i, r := range rolesAsInterface {
 				roles[i] = r.(string)

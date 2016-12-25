@@ -7,6 +7,9 @@ import Update exposing (update)
 import Model exposing (Model, initialModel)
 import Routing
 import View exposing (view)
+import Http
+import User.Messages as UM
+import Rest.User as Api
 
 
 type alias Flags =
@@ -21,12 +24,16 @@ init flags location =
             Url.parseHash Routing.route location
 
         currentModel =
-            initialModel currentRoute
+            initialModel currentRoute flags.csrfToken
 
-        dbg =
-            Debug.log "init" flags
+        getCurrentUser : Cmd UM.Msg
+        getCurrentUser =
+            if flags.csrfToken /= "" then
+                Http.send UM.OnGetUser <| Api.getCurrentUser currentModel
+            else
+                Cmd.none
     in
-        currentModel ! []
+        currentModel ! [ Cmd.map MsgForUser getCurrentUser ]
 
 
 

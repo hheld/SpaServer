@@ -5,6 +5,7 @@ import Messages exposing (Msg(..))
 import Model exposing (..)
 import UrlParser as Url
 import Routing exposing (route)
+import User.Update as UU
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -14,5 +15,10 @@ update msg model =
             ( { model
                 | route = Url.parseHash route location
               }
+            , Cmd.none
+            )
+
+        MsgForUser userMsg ->
+            ( { model | currentUser = UU.update userMsg model.currentUser }
             , Cmd.none
             )

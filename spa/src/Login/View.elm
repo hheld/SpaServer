@@ -1,10 +1,11 @@
 module Login.View exposing (..)
 
-import Html exposing (Html, div, text, input, label, form, button)
-import Html.Attributes exposing (class, type_, placeholder, value, defaultValue)
+import Html exposing (Html, div, text, input, label, form, button, img)
+import Html.Attributes exposing (class, type_, placeholder, value, defaultValue, src)
 import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
 import Login.Messages exposing (Msg(..))
+import MD5
 
 
 loginPage : User -> String -> Html Msg
@@ -18,6 +19,7 @@ loginPage user csrfToken =
                 , onClick DoLogout
                 ]
                 [ text "Logout" ]
+            , gravatarImg user.email
             ]
     else
         loginForm user
@@ -58,3 +60,15 @@ loginForm user =
                 [ text "Login" ]
             ]
         ]
+
+
+gravatarImg : String -> Html Msg
+gravatarImg email =
+    let
+        imgUrl : String
+        imgUrl =
+            "https://www.gravatar.com/avatar/" ++ (MD5.hex email) ++ "?d=mm"
+    in
+        img
+            [ src imgUrl ]
+            []

@@ -10,6 +10,7 @@ import User.Messages as UM
 import Login.Update as LU
 import Login.Messages as LM
 import User.Model exposing (emptyUser)
+import Js exposing (getCookieValue)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -21,6 +22,18 @@ update msg model =
               }
             , Cmd.none
             )
+
+        OnCookieValue ( c, v ) ->
+            let
+                updatedCsrfToken =
+                    if c == "Csrf-token" then
+                        v
+                    else
+                        model.csrfToken
+            in
+                ( { model | csrfToken = updatedCsrfToken }
+                , Cmd.none
+                )
 
         MsgForUser userMsg ->
             ( { model | currentUser = UU.update userMsg model.currentUser }
@@ -37,12 +50,11 @@ update msg model =
                         ( updatedLoginData, c ) =
                             LU.update loginMsg model.loginData
                     in
-                        ( { model
+                        { model
                             | currentUser = updatedUser
                             , loginData = updatedLoginData
-                          }
-                        , Cmd.map Messages.MsgForLogin c
-                        )
+                        }
+                            ! [ Cmd.map Messages.MsgForLogin c, getCookieValue "Csrf-token" ]
 
                 LM.OnLogout (Ok _) ->
                     let

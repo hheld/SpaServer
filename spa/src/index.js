@@ -18,3 +18,7 @@ function getCookieValue(cookie) {
     const value = re.exec(document.cookie);
     return value===null ? '' : value[1];
 }
+
+app.ports.getCookieValue.subscribe((cookie) => {
+    app.ports.newCookieValue.send([cookie, getCookieValue(cookie)]);
+});

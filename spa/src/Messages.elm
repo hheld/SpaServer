@@ -7,5 +7,6 @@ import Login.Messages as LM
 
 type Msg
     = UrlChange Navigation.Location
+    | OnCookieValue ( String, String )
     | MsgForUser UM.Msg
     | MsgForLogin LM.Msg

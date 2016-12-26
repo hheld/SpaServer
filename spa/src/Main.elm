@@ -10,6 +10,7 @@ import View exposing (view)
 import Http
 import User.Messages as UM
 import Rest.User as Api
+import Js exposing (newCookieValue)
 
 
 type alias Flags =
@@ -42,7 +43,7 @@ init flags location =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    newCookieValue OnCookieValue
 
 
 

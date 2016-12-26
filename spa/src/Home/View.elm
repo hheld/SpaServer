@@ -10,5 +10,5 @@ homePage : Model -> Html Msg
 homePage model =
     div []
         [ text "This is the home page"
-        , text ("User: " ++ (toString model.currentUser))
+        , text ("User: " ++ (toString model.currentUser) ++ "; CSRF token: " ++ model.csrfToken)
         ]

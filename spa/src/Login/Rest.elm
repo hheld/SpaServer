@@ -11,6 +11,11 @@ tokenUrl =
     "/token"
 
 
+logoutUrl : String
+logoutUrl =
+    "/logout"
+
+
 getTokenCmd : LoginData -> Cmd Msg
 getTokenCmd loginData =
     let
@@ -22,3 +27,12 @@ getTokenCmd loginData =
                 (JD.field "id_token" JD.string)
     in
         Http.send OnGetToken request
+
+
+logoutCmd : Cmd Msg
+logoutCmd =
+    let
+        request =
+            Http.get logoutUrl (JD.field "msg" JD.string)
+    in
+        Http.send OnLogout request

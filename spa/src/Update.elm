@@ -9,6 +9,7 @@ import User.Update as UU
 import User.Messages as UM
 import Login.Update as LU
 import Login.Messages as LM
+import User.Model exposing (emptyUser)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -33,11 +34,27 @@ update msg model =
                         updatedUser =
                             UU.update (UM.UpdateUserFromToken token) model.currentUser
 
-                        dbg =
-                            Debug.log "LM.OnGetToken" updatedUser
+                        ( updatedLoginData, c ) =
+                            LU.update loginMsg model.loginData
                     in
-                        ( { model | currentUser = updatedUser }
-                        , Cmd.none
+                        ( { model
+                            | currentUser = updatedUser
+                            , loginData = updatedLoginData
+                          }
+                        , Cmd.map Messages.MsgForLogin c
+                        )
+
+                LM.OnLogout (Ok _) ->
+                    let
+                        ( updatedLoginData, c ) =
+                            LU.update loginMsg model.loginData
+                    in
+                        ( { model
+                            | currentUser = emptyUser
+                            , loginData = updatedLoginData
+                            , csrfToken = ""
+                          }
+                        , Cmd.map Messages.MsgForLogin c
                         )
 
                 _ ->

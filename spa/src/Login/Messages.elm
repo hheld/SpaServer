@@ -7,5 +7,6 @@ type Msg
     = DoLogin
     | DoLogout
     | OnGetToken (Result Http.Error String)
+    | OnLogout (Result Http.Error String)
     | SetPassword String
     | SetUserName String

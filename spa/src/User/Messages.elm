@@ -6,3 +6,4 @@ import Http
 
 type Msg
     = OnGetUser (Result Http.Error User)
+    | UpdateUserFromToken String

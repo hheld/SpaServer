@@ -5,19 +5,9 @@ import Model exposing (Model)
 import User.Model exposing (User)
 
 
-tokenUrl : String
-tokenUrl =
-    "/token"
-
-
 userInfoUrl : String
 userInfoUrl =
     "/userInfo"
-
-
-logoutUrl : String
-logoutUrl =
-    "/logout"
 
 
 getCurrentUser : Model -> Http.Request User

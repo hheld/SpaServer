@@ -5,6 +5,7 @@ import Model exposing (Model)
 import Messages exposing (Msg)
 import Routing exposing (Route(..))
 import Home.View exposing (homePage)
+import Login.View exposing (loginPage)
 import NotFoundPage.View exposing (notFoundPage)
 
 
@@ -20,7 +21,7 @@ page model =
             homePage model
 
         Just LoginRoute ->
-            homePage model
+            Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
 
         Nothing ->
             notFoundPage model

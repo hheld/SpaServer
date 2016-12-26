@@ -1,7 +1,7 @@
 module Login.View exposing (..)
 
-import Html exposing (Html, div, text, input, label, form, button, img)
-import Html.Attributes exposing (class, type_, placeholder, value, defaultValue, src)
+import Html exposing (Html, div, text, input, label, form, button, img, h3, h6, span, strong)
+import Html.Attributes exposing (class, type_, placeholder, value, defaultValue, src, style)
 import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
 import Login.Messages exposing (Msg(..))
@@ -11,18 +11,50 @@ import MD5
 loginPage : User -> String -> Html Msg
 loginPage user csrfToken =
     if csrfToken /= "" then
-        div []
-            [ text ("Already logged in as " ++ user.userName)
-            , button
-                [ class "btn btn-default"
-                , type_ "button"
-                , onClick DoLogout
-                ]
-                [ text "Logout" ]
-            , gravatarImg user.email
-            ]
+        userInfo user
     else
         loginForm user
+
+
+userInfo : User -> Html Msg
+userInfo user =
+    div
+        [ class "container-fluid well well-sm col-md-12" ]
+        [ div
+            [ class "row" ]
+            [ div
+                [ class "col-md-4" ]
+                [ gravatarImg user.email
+                , div
+                    [ class "row" ]
+                    [ div
+                        [ class "col-md-12" ]
+                        (roleLabels user.roles)
+                    ]
+                ]
+            , div
+                [ class "col-md-4" ]
+                [ h3 [] [ text user.userName ]
+                , h6 []
+                    [ strong [] [ text "Full name: " ]
+                    , text (user.firstName ++ " " ++ user.lastName)
+                    ]
+                , h6 []
+                    [ strong [] [ text "Email: " ]
+                    , text user.email
+                    ]
+                ]
+            , div
+                [ class "col-md-4" ]
+                [ button
+                    [ class "btn btn-default"
+                    , type_ "button"
+                    , onClick DoLogout
+                    ]
+                    [ text "Logout" ]
+                ]
+            ]
+        ]
 
 
 loginForm : User -> Html Msg
@@ -70,5 +102,27 @@ gravatarImg email =
             "https://www.gravatar.com/avatar/" ++ (MD5.hex email) ++ "?d=mm"
     in
         img
-            [ src imgUrl ]
+            [ src imgUrl
+            , class "img-circle"
+            ]
             []
+
+
+roleLabels : List String -> List (Html Msg)
+roleLabels roles =
+    let
+        classForRole : String -> String
+        classForRole r =
+            if r == "admin" then
+                "label label-danger"
+            else
+                "label label-primary"
+
+        myStyle : Html.Attribute Msg
+        myStyle =
+            style
+                [ ( "display", "inline-block" )
+                , ( "margin-left", "1px" )
+                ]
+    in
+        List.map (\r -> span [ class (classForRole r), myStyle ] [ text r ]) roles

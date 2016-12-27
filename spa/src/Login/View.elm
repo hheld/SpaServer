@@ -6,6 +6,7 @@ import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
 import Login.Messages exposing (Msg(..))
 import MD5
+import ViewHelpers exposing (..)
 
 
 loginPage : User -> String -> Html Msg
@@ -106,23 +107,3 @@ gravatarImg email =
             , class "img-circle"
             ]
             []
-
-
-roleLabels : List String -> List (Html Msg)
-roleLabels roles =
-    let
-        classForRole : String -> String
-        classForRole r =
-            if r == "admin" then
-                "label label-danger"
-            else
-                "label label-primary"
-
-        myStyle : Html.Attribute Msg
-        myStyle =
-            style
-                [ ( "display", "inline-block" )
-                , ( "margin-left", "1px" )
-                ]
-    in
-        List.map (\r -> span [ class (classForRole r), myStyle ] [ text r ]) roles

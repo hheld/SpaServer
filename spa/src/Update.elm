@@ -4,7 +4,7 @@ import Navigation
 import Messages exposing (Msg(..))
 import Model exposing (..)
 import UrlParser as Url
-import Routing exposing (route)
+import Routing exposing (route, Route(..))
 import User.Update as UU
 import User.Messages as UM
 import Login.Update as LU
@@ -12,17 +12,35 @@ import Login.Messages as LM
 import Login.Rest exposing (logoutCmd)
 import User.Model exposing (emptyUser)
 import Js exposing (getCookieValue)
+import Rest.User as Api
+import Http
+import AllUsersTable.Update as AUU
+import AllUsersTable.Messages as AUM
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChange location ->
-            ( { model
-                | route = Url.parseHash route location
-              }
-            , Cmd.none
-            )
+            let
+                newRoute =
+                    Url.parseHash route location
+
+                cmd =
+                    case newRoute of
+                        Just AllUsersRoute ->
+                            Api.getAllUsers model
+                                |> Http.send AUM.OnGetAllUsers
+                                |> Cmd.map MsgFoAllUsersTable
+
+                        _ ->
+                            Cmd.none
+            in
+                ( { model
+                    | route = newRoute
+                  }
+                , cmd
+                )
 
         OnCookieValue ( c, v ) ->
             let
@@ -88,3 +106,10 @@ update msg model =
                         ( { model | loginData = currentLoginData }
                         , Cmd.map Messages.MsgForLogin c
                         )
+
+        MsgFoAllUsersTable allUsersMsg ->
+            ( { model
+                | allUsersData = AUU.update allUsersMsg model.allUsersData
+              }
+            , Cmd.none
+            )

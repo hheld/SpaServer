@@ -3,6 +3,7 @@ module Model exposing (..)
 import Routing exposing (Route)
 import User.Model as User exposing (User)
 import Login.Model as Login exposing (LoginData)
+import AllUsersTable.Model as AllUsers exposing (AllUsers)
 
 
 type alias Model =
@@ -10,6 +11,7 @@ type alias Model =
     , csrfToken : String
     , currentUser : User
     , loginData : LoginData
+    , allUsersData : AllUsers
     }
 
 
@@ -19,4 +21,5 @@ initialModel route csrfToken =
     , csrfToken = csrfToken
     , currentUser = User.emptyUser
     , loginData = Login.emptyLoginData
+    , allUsersData = AllUsers.emptyAllUsers
     }

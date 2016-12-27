@@ -8,6 +8,7 @@ import Routing exposing (Route(..))
 import Home.View exposing (homePage)
 import Login.View exposing (loginPage)
 import NotFoundPage.View exposing (notFoundPage)
+import AllUsersTable.View exposing (allUsersPage)
 import Tuple exposing (first, second)
 
 
@@ -26,6 +27,9 @@ page model =
 
                 Just LoginRoute ->
                     Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
+
+                Just AllUsersRoute ->
+                    allUsersPage model
 
                 Nothing ->
                     notFoundPage model
@@ -81,6 +85,12 @@ isTabActive model { route, tabTitle, adminOnly } =
 
         Just LoginRoute ->
             False
+
+        Just AllUsersRoute ->
+            if route == "#users" then
+                True
+            else
+                False
 
         Nothing ->
             False

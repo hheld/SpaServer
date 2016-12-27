@@ -19,6 +19,6 @@ function getCookieValue(cookie) {
     return value===null ? '' : value[1];
 }
 
-app.ports.getCookieValue.subscribe((cookie) => {
+app.ports.getCookieValue.subscribe(function(cookie) {
     app.ports.newCookieValue.send([cookie, getCookieValue(cookie)]);
 });

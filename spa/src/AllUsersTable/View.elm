@@ -1,6 +1,6 @@
 module AllUsersTable.View exposing (..)
 
-import Html exposing (Html, text, table, thead, tbody, th, tr, td)
+import Html exposing (Html, div, text, table, thead, tbody, th, tr, td)
 import Html.Attributes exposing (class)
 import Model exposing (Model)
 import Messages exposing (Msg(..))
@@ -31,15 +31,17 @@ usersTable allUsers =
                 )
                 allUsers
     in
-        table
-            [ class "table table-striped table-condensed" ]
-            [ thead []
-                [ th [] [ text "User name" ]
-                , th [] [ text "First name" ]
-                , th [] [ text "Last name" ]
-                , th [] [ text "Email" ]
-                , th [] [ text "Roles" ]
+        div [ class "table-responsive" ]
+            [ table
+                [ class "table table-striped table-condensed" ]
+                [ thead []
+                    [ th [] [ text "User name" ]
+                    , th [] [ text "First name" ]
+                    , th [] [ text "Last name" ]
+                    , th [] [ text "Email" ]
+                    , th [] [ text "Roles" ]
+                    ]
+                , tbody []
+                    rows
                 ]
-            , tbody []
-                rows
             ]

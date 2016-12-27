@@ -9,6 +9,7 @@ import Routing
 import View exposing (view)
 import Http
 import User.Messages as UM
+import AllUsersTable.Messages as AUM
 import Rest.User as Api
 import Js exposing (newCookieValue)
 
@@ -27,6 +28,16 @@ init flags location =
         currentModel =
             initialModel currentRoute flags.csrfToken
 
+        initialFetchCmdForRoute =
+            case currentRoute of
+                Just (Routing.AllUsersRoute) ->
+                    Api.getAllUsers currentModel
+                        |> Http.send AUM.OnGetAllUsers
+                        |> Cmd.map MsgFoAllUsersTable
+
+                _ ->
+                    Cmd.none
+
         getCurrentUser : Cmd UM.Msg
         getCurrentUser =
             if flags.csrfToken /= "" then
@@ -34,7 +45,7 @@ init flags location =
             else
                 Cmd.none
     in
-        currentModel ! [ Cmd.map MsgForUser getCurrentUser ]
+        currentModel ! [ Cmd.map MsgForUser getCurrentUser, initialFetchCmdForRoute ]
 
 
 

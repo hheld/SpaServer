@@ -9,6 +9,7 @@ import User.Update as UU
 import User.Messages as UM
 import Login.Update as LU
 import Login.Messages as LM
+import Login.Rest exposing (logoutCmd)
 import User.Model exposing (emptyUser)
 import Js exposing (getCookieValue)
 
@@ -36,9 +37,19 @@ update msg model =
                 )
 
         MsgForUser userMsg ->
-            ( { model | currentUser = UU.update userMsg model.currentUser }
-            , Cmd.none
-            )
+            case userMsg of
+                UM.OnGetUser (Err _) ->
+                    ( { model
+                        | currentUser = UU.update userMsg model.currentUser
+                        , csrfToken = ""
+                      }
+                    , Cmd.map MsgForLogin logoutCmd
+                    )
+
+                _ ->
+                    ( { model | currentUser = UU.update userMsg model.currentUser }
+                    , Cmd.none
+                    )
 
         MsgForLogin loginMsg ->
             case loginMsg of

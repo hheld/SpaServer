@@ -1,6 +1,6 @@
 module User.Update exposing (..)
 
-import User.Model exposing (User)
+import User.Model exposing (User, emptyUser)
 import User.Messages exposing (Msg(..))
 import Http
 import User.Jwt exposing (extractInfoFromToken)
@@ -13,11 +13,7 @@ update msg user =
             u
 
         OnGetUser (Err err) ->
-            let
-                dbg =
-                    Debug.log "User.update" err
-            in
-                user
+            emptyUser
 
         UpdateUserFromToken token ->
             extractInfoFromToken token

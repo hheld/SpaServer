@@ -6,5 +6,5 @@ import Messages exposing (Msg)
 
 
 notFoundPage : Model -> Html Msg
-notFoundPage model =
-    div [] [ text "Not found" ]
+notFoundPage _ =
+    div [] [ text "This page does not exist." ]

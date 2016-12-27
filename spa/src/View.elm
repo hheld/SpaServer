@@ -39,7 +39,7 @@ outerLayout model content =
         [ div
             [ class "row" ]
             [ div
-                [ class "col-md-8" ]
+                [ class "col-xs-8" ]
                 [ div
                     [ class "page-header" ]
                     [ h1 []
@@ -49,7 +49,7 @@ outerLayout model content =
                 , content
                 ]
             , div
-                [ class "pull-right col-md-4" ]
+                [ class "pull-right col-xs-4" ]
                 [ Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
                 ]
             ]

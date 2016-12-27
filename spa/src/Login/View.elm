@@ -19,7 +19,7 @@ loginPage user csrfToken =
 userInfo : User -> Html Msg
 userInfo user =
     div
-        [ class "container-fluid well well-sm col-md-12" ]
+        [ class "container-fluid well well-sm" ]
         [ div
             [ class "row" ]
             [ div
@@ -28,7 +28,7 @@ userInfo user =
                 , div
                     [ class "row" ]
                     [ div
-                        [ class "col-md-12" ]
+                        [ class "col-xs-12" ]
                         (roleLabels user.roles)
                     ]
                 ]

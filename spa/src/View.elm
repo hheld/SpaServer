@@ -25,9 +25,6 @@ page model =
                 Just HomeRoute ->
                     homePage model
 
-                Just LoginRoute ->
-                    Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
-
                 Just AllUsersRoute ->
                     allUsersPage model
 
@@ -82,9 +79,6 @@ isTabActive model { route, tabTitle, adminOnly } =
                 True
             else
                 False
-
-        Just LoginRoute ->
-            False
 
         Just AllUsersRoute ->
             if route == "#users" then

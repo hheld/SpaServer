@@ -179,3 +179,30 @@ func ensureAuth(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return
 }
+
+func stringInList(element string, list []string) bool {
+	for _, b := range list {
+		if b == element {
+			return true
+		}
+	}
+
+	return false
+}
+
+func ensureGroup(allowedGroups []string) handler {
+	return func(w http.ResponseWriter, req *http.Request) (err error) {
+		ctx := req.Context()
+		userInfo := ctx.Value("userInfo").(User)
+
+		for _, role := range userInfo.Roles {
+			if stringInList(role, allowedGroups) {
+				return
+			}
+		}
+
+		err = errors.New("User not authorized for this query")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+}

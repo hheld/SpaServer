@@ -108,3 +108,17 @@ func logoutRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return
 }
+
+func allUsersRoute(w http.ResponseWriter, req *http.Request) (err error) {
+	if req.Method != "GET" {
+		return errors.New("All users endpoint only accepts GET requests!")
+	}
+
+	users, err := GetAllUsersInDb()
+
+	if err != nil {
+		return
+	}
+
+	return json.NewEncoder(w).Encode(users)
+}

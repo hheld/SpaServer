@@ -11,4 +11,4 @@ type Msg
     | OnCookieValue ( String, String )
     | MsgForUser UM.Msg
     | MsgForLogin LM.Msg
-    | MsgFoAllUsersTable AUM.Msg
+    | MsgForAllUsersTable AUM.Msg

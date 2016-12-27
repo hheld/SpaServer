@@ -33,7 +33,7 @@ init flags location =
                 Just (Routing.AllUsersRoute) ->
                     Api.getAllUsers currentModel
                         |> Http.send AUM.OnGetAllUsers
-                        |> Cmd.map MsgFoAllUsersTable
+                        |> Cmd.map MsgForAllUsersTable
 
                 _ ->
                     Cmd.none

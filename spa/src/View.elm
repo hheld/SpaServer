@@ -26,7 +26,7 @@ page model =
                     homePage model
 
                 Just AllUsersRoute ->
-                    allUsersPage model
+                    Html.map Messages.MsgForAllUsersTable (allUsersPage model)
 
                 Nothing ->
                     notFoundPage model

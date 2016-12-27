@@ -31,7 +31,7 @@ update msg model =
                         Just AllUsersRoute ->
                             Api.getAllUsers model
                                 |> Http.send AUM.OnGetAllUsers
-                                |> Cmd.map MsgFoAllUsersTable
+                                |> Cmd.map MsgForAllUsersTable
 
                         _ ->
                             Cmd.none
@@ -107,7 +107,7 @@ update msg model =
                         , Cmd.map Messages.MsgForLogin c
                         )
 
-        MsgFoAllUsersTable allUsersMsg ->
+        MsgForAllUsersTable allUsersMsg ->
             ( { model
                 | allUsersData = AUU.update allUsersMsg model.allUsersData
               }

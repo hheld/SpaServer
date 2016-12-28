@@ -3,10 +3,11 @@ module AllUsersTable.Model exposing (..)
 import User.Model exposing (User)
 
 
-type alias AllUsers =
-    List User
+type alias AllUsersData =
+    { allUsers : List User
+    }
 
 
-emptyAllUsers : AllUsers
+emptyAllUsers : AllUsersData
 emptyAllUsers =
-    []
+    AllUsersData []

@@ -2,9 +2,10 @@ module AllUsersTable.View exposing (..)
 
 import Html exposing (Html, div, text, table, thead, tbody, th, tr, td)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import Model exposing (Model)
 import AllUsersTable.Messages exposing (Msg(..))
-import AllUsersTable.Model exposing (AllUsers)
+import AllUsersTable.Model exposing (AllUsersData)
 import User.Model exposing (User)
 import ViewHelpers exposing (..)
 
@@ -14,14 +15,14 @@ allUsersPage model =
     usersTable model.allUsersData
 
 
-usersTable : AllUsers -> Html Msg
+usersTable : AllUsersData -> Html Msg
 usersTable allUsers =
     let
         rows : List (Html Msg)
         rows =
             List.map
                 (\u ->
-                    tr []
+                    tr [ onClick (OnRowClicked u) ]
                         [ td [] [ text u.userName ]
                         , td [] [ text u.firstName ]
                         , td [] [ text u.lastName ]
@@ -29,7 +30,7 @@ usersTable allUsers =
                         , td [] (roleLabels u.roles)
                         ]
                 )
-                allUsers
+                allUsers.allUsers
     in
         div [ class "table-responsive" ]
             [ table

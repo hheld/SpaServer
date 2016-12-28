@@ -1,14 +1,21 @@
 module AllUsersTable.Update exposing (..)
 
 import AllUsersTable.Messages exposing (Msg(..))
-import AllUsersTable.Model exposing (AllUsers, emptyAllUsers)
+import AllUsersTable.Model exposing (AllUsersData, emptyAllUsers)
 
 
-update : Msg -> AllUsers -> AllUsers
+update : Msg -> AllUsersData -> AllUsersData
 update msg allUsers =
     case msg of
         OnGetAllUsers (Ok users) ->
-            users
+            { allUsers | allUsers = users }
 
         OnGetAllUsers (Err _) ->
             emptyAllUsers
+
+        OnRowClicked user ->
+            let
+                dbg =
+                    Debug.log "OnUserClicked" user
+            in
+                allUsers

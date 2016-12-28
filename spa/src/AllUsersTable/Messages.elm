@@ -7,3 +7,8 @@ import User.Model exposing (User)
 type Msg
     = OnGetAllUsers (Result Http.Error (List User))
     | OnRowClicked User
+    | SetUserName String
+    | SetFirstName String
+    | SetLastName String
+    | SetEmail String
+    | SetRoles (List String)

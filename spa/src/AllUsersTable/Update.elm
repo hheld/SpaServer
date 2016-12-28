@@ -15,7 +15,75 @@ update msg allUsers =
 
         OnRowClicked user ->
             let
-                dbg =
-                    Debug.log "OnUserClicked" user
+                newSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            if u == user then
+                                Nothing
+                            else
+                                Just user
+
+                        Nothing ->
+                            Just user
             in
-                allUsers
+                { allUsers | selectedUser = newSelectedUser }
+
+        SetUserName userName ->
+            let
+                updatedSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            Just { u | userName = userName }
+
+                        Nothing ->
+                            Nothing
+            in
+                { allUsers | selectedUser = updatedSelectedUser }
+
+        SetFirstName firstName ->
+            let
+                updatedSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            Just { u | firstName = firstName }
+
+                        Nothing ->
+                            Nothing
+            in
+                { allUsers | selectedUser = updatedSelectedUser }
+
+        SetLastName lastName ->
+            let
+                updatedSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            Just { u | lastName = lastName }
+
+                        Nothing ->
+                            Nothing
+            in
+                { allUsers | selectedUser = updatedSelectedUser }
+
+        SetEmail email ->
+            let
+                updatedSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            Just { u | email = email }
+
+                        Nothing ->
+                            Nothing
+            in
+                { allUsers | selectedUser = updatedSelectedUser }
+
+        SetRoles roles ->
+            let
+                updatedSelectedUser =
+                    case allUsers.selectedUser of
+                        Just u ->
+                            Just { u | roles = roles }
+
+                        Nothing ->
+                            Nothing
+            in
+                { allUsers | selectedUser = updatedSelectedUser }

@@ -18,6 +18,22 @@ func userInfoRoute(w http.ResponseWriter, r *http.Request) (err error) {
 	return json.NewEncoder(w).Encode(&userInfo)
 }
 
+func updateUserRoute(w http.ResponseWriter, r *http.Request) (err error) {
+	if r.Method != "POST" {
+		return errors.New("Update user endpoint only accepts POST requesets")
+	}
+
+	userData := struct {
+		OldData User
+		NewData User
+	}{}
+
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&userData)
+
+	return UpdateData(&userData.OldData, &userData.NewData)
+}
+
 func fileHandler(rootDir string) http.Handler {
 	return http.FileServer(http.Dir(rootDir))
 }

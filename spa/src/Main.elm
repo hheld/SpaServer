@@ -7,7 +7,6 @@ import Update exposing (update)
 import Model exposing (Model, initialModel)
 import Routing
 import View exposing (view)
-import Http
 import User.Messages as UM
 import AllUsersTable.Messages as AUM
 import Rest.User as Api
@@ -31,8 +30,7 @@ init flags location =
         initialFetchCmdForRoute =
             case currentRoute of
                 Just (Routing.AllUsersRoute) ->
-                    Api.getAllUsers currentModel
-                        |> Http.send AUM.OnGetAllUsers
+                    Api.getAllUsersCmd currentModel
                         |> Cmd.map MsgForAllUsersTable
 
                 _ ->
@@ -41,7 +39,7 @@ init flags location =
         getCurrentUser : Cmd UM.Msg
         getCurrentUser =
             if flags.csrfToken /= "" then
-                Http.send UM.OnGetUser <| Api.getCurrentUser currentModel
+                Api.getCurrentUserCmd currentModel
             else
                 Cmd.none
     in

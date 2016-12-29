@@ -13,7 +13,6 @@ import Login.Rest exposing (logoutCmd)
 import User.Model exposing (emptyUser)
 import Js exposing (getCookieValue)
 import Rest.User as Api
-import Http
 import AllUsersTable.Update as AUU
 import AllUsersTable.Messages as AUM
 
@@ -29,8 +28,7 @@ update msg model =
                 cmd =
                     case newRoute of
                         Just AllUsersRoute ->
-                            Api.getAllUsers model
-                                |> Http.send AUM.OnGetAllUsers
+                            Api.getAllUsersCmd model
                                 |> Cmd.map MsgForAllUsersTable
 
                         _ ->
@@ -108,8 +106,38 @@ update msg model =
                         )
 
         MsgForAllUsersTable allUsersMsg ->
-            ( { model
-                | allUsersData = AUU.update allUsersMsg model.allUsersData
-              }
-            , Cmd.none
-            )
+            case allUsersMsg of
+                AUM.UpdateUser ->
+                    let
+                        cmd =
+                            case model.allUsersData.selectedUser of
+                                Nothing ->
+                                    Cmd.none
+
+                                Just u ->
+                                    case model.allUsersData.originalSelectedUser of
+                                        Nothing ->
+                                            Cmd.none
+
+                                        Just o ->
+                                            Cmd.map MsgForAllUsersTable (Api.updateUserCmd model o u)
+
+                        updatedModel =
+                            { model
+                                | allUsersData = AUU.update allUsersMsg model.allUsersData
+                            }
+                    in
+                        ( updatedModel, cmd )
+
+                AUM.OnUserUpdated (Ok _) ->
+                    ( model
+                    , Cmd.map MsgForAllUsersTable
+                        (Api.getAllUsersCmd model)
+                    )
+
+                _ ->
+                    ( { model
+                        | allUsersData = AUU.update allUsersMsg model.allUsersData
+                      }
+                    , Cmd.none
+                    )

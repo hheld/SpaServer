@@ -1,6 +1,6 @@
 module AllUsersTable.View exposing (..)
 
-import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, label, input)
+import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, label, input, button)
 import Html.Attributes exposing (class, type_, placeholder, defaultValue)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
@@ -154,4 +154,11 @@ userEditor user =
                 ""
                 user.roles
             )
+        , button
+            [ type_ "button"
+            , class "btn btn-warning"
+            , onClick UpdateUser
+            ]
+            [ text "Update user"
+            ]
         ]

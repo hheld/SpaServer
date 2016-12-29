@@ -26,7 +26,10 @@ update msg allUsers =
                         Nothing ->
                             Just user
             in
-                { allUsers | selectedUser = newSelectedUser }
+                { allUsers
+                    | selectedUser = newSelectedUser
+                    , originalSelectedUser = newSelectedUser
+                }
 
         SetUserName userName ->
             let
@@ -87,3 +90,12 @@ update msg allUsers =
                             Nothing
             in
                 { allUsers | selectedUser = updatedSelectedUser }
+
+        OnUserUpdated (Ok _) ->
+            allUsers
+
+        OnUserUpdated (Err _) ->
+            allUsers
+
+        UpdateUser ->
+            allUsers

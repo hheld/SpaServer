@@ -12,3 +12,5 @@ type Msg
     | SetLastName String
     | SetEmail String
     | SetRoles (List String)
+    | OnUserUpdated (Result Http.Error String)
+    | UpdateUser

@@ -96,7 +96,7 @@ cleanRoles roles =
             Regex.replace
                 Regex.All
                 (Regex.regex "([^\\s;])?(?:\\s*;\\s*)+([^\\s;])?")
-                (\{ match, submatches } ->
+                (\{ submatches } ->
                     let
                         front =
                             submatches

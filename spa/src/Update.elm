@@ -130,10 +130,12 @@ update msg model =
                         ( updatedModel, cmd )
 
                 AUM.OnUserUpdated (Ok _) ->
-                    ( model
-                    , Cmd.map MsgForAllUsersTable
-                        (Api.getAllUsersCmd model)
-                    )
+                    model
+                        ! [ Cmd.map MsgForAllUsersTable
+                                (Api.getAllUsersCmd model)
+                          , Cmd.map MsgForUser
+                                (Api.getCurrentUserCmd model)
+                          ]
 
                 _ ->
                     ( { model

@@ -15,7 +15,18 @@ func userInfoRoute(w http.ResponseWriter, r *http.Request) (err error) {
 	ctx := r.Context()
 	userInfo := ctx.Value("userInfo").(User)
 
-	return json.NewEncoder(w).Encode(&userInfo)
+	// Note that I deliberately return the data from the database here.
+	// The logged-in user's data could have been changed, but as long as the
+	// token is valid, the information in it is no longer correct! Only the
+	// database information is. If the user name should change, this will not work
+	// at all any more, so in that case, I still return the token information.
+	userFromDb, err := GetUser(userInfo.UserName)
+
+	if err != nil {
+		return json.NewEncoder(w).Encode(&userFromDb)
+	}
+
+	return json.NewEncoder(w).Encode(&userFromDb)
 }
 
 func updateUserRoute(w http.ResponseWriter, r *http.Request) (err error) {

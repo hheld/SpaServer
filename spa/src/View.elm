@@ -61,8 +61,14 @@ outerLayout model content =
                     [ h1 []
                         [ text "Page header" ]
                     ]
-                , navigation model
-                , content
+                , div [ class "panel panel-default" ]
+                    [ div [ class "panel-heading" ]
+                        [ navigation model
+                        ]
+                    , div [ class "panel-body" ]
+                        [ content
+                        ]
+                    ]
                 ]
             , div
                 [ class "pull-right col-xs-4" ]

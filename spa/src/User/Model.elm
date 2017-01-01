@@ -25,7 +25,12 @@ userDecoder =
         (JD.at [ "FirstName" ] JD.string)
         (JD.at [ "LastName" ] JD.string)
         (JD.at [ "Email" ] JD.string)
-        (JD.at [ "Roles" ] (JD.list JD.string))
+        (JD.at [ "Roles" ] <|
+            JD.oneOf
+                [ JD.list JD.string
+                , JD.null []
+                ]
+        )
 
 
 userEncoder : User -> JE.Value

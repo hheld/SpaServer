@@ -7,9 +7,10 @@ type alias AddUserData =
     { newUser : User
     , password : String
     , passwordControl : String
+    , httpError : Maybe String
     }
 
 
 emptyAddUserData : AddUserData
 emptyAddUserData =
-    AddUserData emptyUser "" ""
+    AddUserData emptyUser "" "" Nothing

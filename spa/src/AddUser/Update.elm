@@ -3,6 +3,7 @@ module AddUser.Update exposing (..)
 import AddUser.Model exposing (AddUserData, emptyAddUserData)
 import AddUser.Messages exposing (Msg(..))
 import User.Model exposing (User)
+import Http
 
 
 update : Msg -> AddUserData -> AddUserData
@@ -84,5 +85,17 @@ update msg model =
         OnUserAdded (Ok _) ->
             emptyAddUserData
 
-        OnUserAdded (Err _) ->
-            model
+        OnUserAdded (Err err) ->
+            let
+                errMsg : String
+                errMsg =
+                    case err of
+                        Http.BadStatus resp ->
+                            resp.body
+
+                        _ ->
+                            ""
+            in
+                { model
+                    | httpError = Just errMsg
+                }

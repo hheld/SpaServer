@@ -110,6 +110,8 @@ func handle(handlers ...handler) http.Handler {
 			err := handler(w, r)
 			if err != nil {
 				log.Printf("There was an error: %v", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte(err.Error()))
 				return
 			}
 		}

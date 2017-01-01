@@ -7,6 +7,7 @@ import User.Messages as UM
 import Json.Decode as JD
 import Json.Encode as JE
 import AllUsersTable.Messages as AM
+import AddUser.Messages as AddUM
 
 
 userInfoUrl : String
@@ -22,6 +23,11 @@ allUsersUrl =
 updateUserUrl : String
 updateUserUrl =
     "/updateUser"
+
+
+addUserUrl : String
+addUserUrl =
+    "/addUser"
 
 
 getCurrentUserCmd : Model -> Cmd UM.Msg
@@ -82,3 +88,27 @@ updateUserCmd model oldUser newUser =
                 }
     in
         Http.send AM.OnUserUpdated request
+
+
+addUserCmd : Model -> Cmd AddUM.Msg
+addUserCmd model =
+    let
+        encoder : JE.Value
+        encoder =
+            JE.object
+                [ ( "User", User.Model.userEncoder model.addUserData.newUser )
+                , ( "Password", JE.string model.addUserData.password )
+                ]
+
+        request =
+            Http.request
+                { method = "POST"
+                , headers = [ Http.header "X-Csrf-Token" model.csrfToken ]
+                , url = addUserUrl
+                , expect = Http.expectString
+                , timeout = Nothing
+                , withCredentials = False
+                , body = Http.jsonBody encoder
+                }
+    in
+        Http.send AddUM.OnUserAdded request

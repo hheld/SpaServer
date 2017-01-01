@@ -15,6 +15,8 @@ import Js exposing (getCookieValue)
 import Rest.User as Api
 import AllUsersTable.Update as AUU
 import AllUsersTable.Messages as AUM
+import AddUser.Messages as AddUM
+import AddUser.Update as AddUU
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -143,3 +145,24 @@ update msg model =
                       }
                     , Cmd.none
                     )
+
+        MsgForAddUser addUserMsg ->
+            case addUserMsg of
+                AddUM.AddUser ->
+                    ( { model
+                        | addUserData = AddUU.update addUserMsg model.addUserData
+                      }
+                    , Cmd.map MsgForAddUser (Api.addUserCmd model)
+                    )
+
+                AddUM.OnUserAdded (Ok _) ->
+                    { model
+                        | addUserData = AddUU.update addUserMsg model.addUserData
+                    }
+                        ! [ Navigation.newUrl "#users" ]
+
+                _ ->
+                    { model
+                        | addUserData = AddUU.update addUserMsg model.addUserData
+                    }
+                        ! [ Cmd.none ]

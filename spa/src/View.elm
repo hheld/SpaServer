@@ -9,7 +9,9 @@ import Home.View exposing (homePage)
 import Login.View exposing (loginPage)
 import NotFoundPage.View exposing (notFoundPage)
 import AllUsersTable.View exposing (allUsersPage)
+import AddUser.View exposing (addUserPage)
 import Tuple exposing (first, second)
+import UnauthorizedPage.View exposing (unauthorizedPage)
 
 
 view : Model -> Html Msg
@@ -20,13 +22,26 @@ view model =
 page : Model -> Html Msg
 page model =
     let
+        isAdmin : Bool
+        isAdmin =
+            List.member "admin" model.currentUser.roles
+
         content =
             case model.route of
                 Just HomeRoute ->
                     homePage model
 
                 Just AllUsersRoute ->
-                    Html.map Messages.MsgForAllUsersTable (allUsersPage model)
+                    if isAdmin then
+                        Html.map Messages.MsgForAllUsersTable (allUsersPage model)
+                    else
+                        unauthorizedPage model
+
+                Just AddUserRoute ->
+                    if isAdmin then
+                        Html.map Messages.MsgForAddUser <| addUserPage model.addUserData
+                    else
+                        unauthorizedPage model
 
                 Nothing ->
                     notFoundPage model
@@ -68,6 +83,7 @@ tabInfos : List TabInfo
 tabInfos =
     [ { route = "#", tabTitle = "Home", adminOnly = False }
     , { route = "#users", tabTitle = "Users", adminOnly = True }
+    , { route = "#newUser", tabTitle = "Add user", adminOnly = True }
     ]
 
 
@@ -82,6 +98,12 @@ isTabActive model { route, tabTitle, adminOnly } =
 
         Just AllUsersRoute ->
             if route == "#users" then
+                True
+            else
+                False
+
+        Just AddUserRoute ->
+            if route == "#newUser" then
                 True
             else
                 False

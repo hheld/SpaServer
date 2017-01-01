@@ -1,15 +1,14 @@
 module AllUsersTable.View exposing (..)
 
-import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, label, input, button)
-import Html.Attributes exposing (class, type_, placeholder, defaultValue)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, button)
+import Html.Attributes exposing (class, type_)
+import Html.Events exposing (onClick)
 import Model exposing (Model)
 import AllUsersTable.Messages exposing (Msg(..))
 import AllUsersTable.Model exposing (AllUsersData)
 import User.Model exposing (User)
 import ViewHelpers exposing (..)
 import String exposing (split)
-import Regex
 
 
 allUsersPage : Model -> Html Msg
@@ -62,76 +61,14 @@ usersTable allUsers =
             ]
 
 
-userPropertyInput : (msg -> Msg) -> (String -> msg) -> String -> String -> String -> String -> Html Msg
-userPropertyInput msgOnInput inputTransform inputType labelText placeholderVal defaultVal =
-    div [ class "form-group" ]
-        [ label [ class "col-sm-2 control-label" ]
-            [ text labelText ]
-        , div [ class "col-sm-10" ]
-            [ input
-                [ type_ inputType
-                , class "form-control"
-                , placeholder placeholderVal
-                , defaultValue defaultVal
-                , onInput (msgOnInput << inputTransform)
-                ]
-                []
-            ]
-        ]
-
-
-cleanRoles : String -> String
-cleanRoles roles =
-    let
-        cleanBeginning : String -> String
-        cleanBeginning b =
-            Regex.replace
-                Regex.All
-                (Regex.regex "^(?:\\s*;*\\s*)*")
-                (\_ -> "")
-                b
-
-        cleanMiddle : String -> String
-        cleanMiddle m =
-            Regex.replace
-                Regex.All
-                (Regex.regex "([^\\s;])?(?:\\s*;\\s*)+([^\\s;])?")
-                (\{ submatches } ->
-                    let
-                        front =
-                            submatches
-                                |> List.head
-                                |> Maybe.withDefault (Just "")
-                                |> Maybe.withDefault ""
-
-                        back =
-                            submatches
-                                |> List.tail
-                                |> Maybe.withDefault ([ Just "" ])
-                                |> List.head
-                                |> Maybe.withDefault (Just "")
-                                |> Maybe.withDefault ""
-                    in
-                        if back /= "" then
-                            front ++ ";" ++ back
-                        else
-                            front
-                )
-                m
-    in
-        roles
-            |> cleanBeginning
-            |> cleanMiddle
-
-
 userEditor : User -> Html Msg
 userEditor user =
     form [ class "form-horizontal" ]
-        [ userPropertyInput SetUserName identity "text" "User name" "User name" user.userName
-        , userPropertyInput SetFirstName identity "text" "First name" "First name" user.firstName
-        , userPropertyInput SetLastName identity "text" "Last name" "Last name" user.lastName
-        , userPropertyInput SetEmail identity "email" "Email" "Email" user.email
-        , userPropertyInput SetRoles
+        [ inputField SetUserName identity "text" "User name" "User name" user.userName
+        , inputField SetFirstName identity "text" "First name" "First name" user.firstName
+        , inputField SetLastName identity "text" "Last name" "Last name" user.lastName
+        , inputField SetEmail identity "email" "Email" "Email" user.email
+        , inputField SetRoles
             (\r ->
                 r
                     |> cleanRoles

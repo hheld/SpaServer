@@ -149,3 +149,19 @@ func allUsersRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return json.NewEncoder(w).Encode(users)
 }
+
+func addUserRoute(w http.ResponseWriter, req *http.Request) (err error) {
+	if req.Method != "POST" {
+		return errors.New("Add user endpoint only accepts POST requests!")
+	}
+
+	userData := struct {
+		User     User
+		Password string
+	}{}
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.Decode(&userData)
+
+	return StoreUserInDb(&userData.User, userData.Password)
+}

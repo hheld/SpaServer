@@ -1,12 +1,12 @@
 module AllUsersTable.View exposing (..)
 
 import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, button)
-import Html.Attributes exposing (class, type_)
+import Html.Attributes exposing (class, type_, classList)
 import Html.Events exposing (onClick)
 import Model exposing (Model)
 import AllUsersTable.Messages exposing (Msg(..))
 import AllUsersTable.Model exposing (AllUsersData)
-import User.Model exposing (User)
+import User.Model exposing (User, emptyUser)
 import ViewHelpers exposing (..)
 import String exposing (split)
 
@@ -35,7 +35,12 @@ usersTable allUsers =
         rows =
             List.map
                 (\u ->
-                    tr [ onClick (OnRowClicked u) ]
+                    tr
+                        [ onClick (OnRowClicked u)
+                        , classList
+                            [ ( "info", u == Maybe.withDefault emptyUser allUsers.selectedUser )
+                            ]
+                        ]
                         [ td [] [ text u.userName ]
                         , td [] [ text u.firstName ]
                         , td [] [ text u.lastName ]
@@ -47,7 +52,7 @@ usersTable allUsers =
     in
         div [ class "table-responsive" ]
             [ table
-                [ class "table table-striped table-condensed" ]
+                [ class "table table-striped table-condensed table-hover" ]
                 [ thead []
                     [ th [] [ text "User name" ]
                     , th [] [ text "First name" ]

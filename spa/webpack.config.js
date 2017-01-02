@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack")
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -48,6 +49,11 @@ module.exports = {
   plugins : [
       new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || '')
+      }),
+
+      new HtmlWebpackPlugin({
+          title: 'App name goes here!!',
+          template: 'src/index.ejs'
       }),
   ]
 };

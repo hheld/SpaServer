@@ -99,3 +99,15 @@ update msg allUsers =
 
         UpdateUser ->
             allUsers
+
+        DeleteUser _ ->
+            allUsers
+
+        OnUserDeleted (Ok _) ->
+            { allUsers
+                | selectedUser = Nothing
+                , originalSelectedUser = Nothing
+            }
+
+        OnUserDeleted (Err _) ->
+            allUsers

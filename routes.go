@@ -165,3 +165,18 @@ func addUserRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return StoreUserInDb(&userData.User, userData.Password)
 }
+
+func deleteUserRoute(w http.ResponseWriter, req *http.Request) (err error) {
+	if req.Method != "POST" {
+		return errors.New("Delete user endpoint only accepts POST requests!")
+	}
+
+	var ud = struct {
+		UserName string
+	}{}
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.Decode(&ud)
+
+	return DeleteUser(ud.UserName)
+}

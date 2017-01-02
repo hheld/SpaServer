@@ -139,6 +139,20 @@ update msg model =
                                 (Api.getCurrentUserCmd model)
                           ]
 
+                AUM.DeleteUser userName ->
+                    ( model
+                    , Cmd.map MsgForAllUsersTable <|
+                        Api.deleteUserCmd model userName
+                    )
+
+                AUM.OnUserDeleted (Ok _) ->
+                    model
+                        ! [ Cmd.map MsgForAllUsersTable <|
+                                Api.getAllUsersCmd model
+                          , Cmd.map MsgForUser <|
+                                Api.getCurrentUserCmd model
+                          ]
+
                 _ ->
                     ( { model
                         | allUsersData = AUU.update allUsersMsg model.allUsersData

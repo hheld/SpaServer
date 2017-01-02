@@ -30,6 +30,11 @@ addUserUrl =
     "/addUser"
 
 
+deleteUserUrl : String
+deleteUserUrl =
+    "/deleteUser"
+
+
 getCurrentUserCmd : Model -> Cmd UM.Msg
 getCurrentUserCmd model =
     let
@@ -112,3 +117,26 @@ addUserCmd model =
                 }
     in
         Http.send AddUM.OnUserAdded request
+
+
+deleteUserCmd : Model -> String -> Cmd AM.Msg
+deleteUserCmd model userName =
+    let
+        encoder : JE.Value
+        encoder =
+            JE.object
+                [ ( "UserName", JE.string userName )
+                ]
+
+        request =
+            Http.request
+                { method = "POST"
+                , headers = [ Http.header "X-Csrf-Token" model.csrfToken ]
+                , url = deleteUserUrl
+                , expect = Http.expectString
+                , timeout = Nothing
+                , withCredentials = False
+                , body = Http.jsonBody encoder
+                }
+    in
+        Http.send AM.OnUserDeleted request

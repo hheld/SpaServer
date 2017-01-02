@@ -46,6 +46,11 @@ usersTable allUsers =
                         , td [] [ text u.lastName ]
                         , td [] [ text u.email ]
                         , td [] (roleLabels u.roles)
+                        , button
+                            [ class "btn btn-danger btn-xs"
+                            , onClick <| DeleteUser u.userName
+                            ]
+                            [ text "Delete" ]
                         ]
                 )
                 allUsers.allUsers
@@ -59,6 +64,7 @@ usersTable allUsers =
                     , th [] [ text "Last name" ]
                     , th [] [ text "Email" ]
                     , th [] [ text "Roles" ]
+                    , th [] [ text "Actions" ]
                     ]
                 , tbody []
                     rows

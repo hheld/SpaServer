@@ -14,3 +14,5 @@ type Msg
     | SetRoles (List String)
     | OnUserUpdated (Result Http.Error String)
     | UpdateUser
+    | DeleteUser String
+    | OnUserDeleted (Result Http.Error String)

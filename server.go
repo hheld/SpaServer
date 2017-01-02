@@ -34,6 +34,7 @@ func main() {
 	mux.Handle("/allUsers", handle(ensureAuth, ensureGroup([]string{"admin"}), allUsersRoute))
 	mux.Handle("/updateUser", handle(ensureAuth, ensureGroup([]string{"admin"}), updateUserRoute))
 	mux.Handle("/addUser", handle(ensureAuth, ensureGroup([]string{"admin"}), addUserRoute))
+	mux.Handle("/deleteUser", handle(ensureAuth, ensureGroup([]string{"admin"}), deleteUserRoute))
 
 	muxWithLogAndUserInfo := addUserInfo(addLog(mux))
 

@@ -23,13 +23,13 @@ allUsersPage model =
                     text ""
     in
         div []
-            [ usersTable model.allUsersData
+            [ usersTable model.allUsersData model.currentUser
             , editor
             ]
 
 
-usersTable : AllUsersData -> Html Msg
-usersTable allUsers =
+usersTable : AllUsersData -> User -> Html Msg
+usersTable allUsers currentUser =
     let
         rows : List (Html Msg)
         rows =
@@ -46,11 +46,16 @@ usersTable allUsers =
                         , td [] [ text u.lastName ]
                         , td [] [ text u.email ]
                         , td [] (roleLabels u.roles)
-                        , button
-                            [ class "btn btn-danger btn-xs"
-                            , onClick <| DeleteUser u.userName
+                        , td []
+                            [ if u /= currentUser then
+                                button
+                                    [ class "btn btn-danger btn-xs"
+                                    , onClick <| DeleteUser u.userName
+                                    ]
+                                    [ text "Delete" ]
+                              else
+                                text ""
                             ]
-                            [ text "Delete" ]
                         ]
                 )
                 allUsers.allUsers

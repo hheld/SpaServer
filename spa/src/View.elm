@@ -59,7 +59,7 @@ outerLayout model content =
                 [ div
                     [ class "page-header" ]
                     [ h1 []
-                        [ text "Page header" ]
+                        [ text model.pageHeader ]
                     ]
                 , div [ class "panel panel-default" ]
                     [ div [ class "panel-heading" ]

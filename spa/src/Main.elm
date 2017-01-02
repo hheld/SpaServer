@@ -15,6 +15,7 @@ import Js exposing (newCookieValue)
 
 type alias Flags =
     { csrfToken : String
+    , pageHeader : String
     }
 
 
@@ -25,7 +26,7 @@ init flags location =
             Url.parseHash Routing.route location
 
         currentModel =
-            initialModel currentRoute flags.csrfToken
+            initialModel currentRoute flags.csrfToken flags.pageHeader
 
         initialFetchCmdForRoute =
             case currentRoute of

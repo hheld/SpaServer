@@ -7,7 +7,8 @@ var Elm = require('./Main.elm');
 var mountNode = document.getElementById('app-container');
 
 var app = Elm.Main.embed(mountNode, {
-    csrfToken: getCookieValue('Csrf-token')
+    csrfToken: getCookieValue('Csrf-token'),
+    pageHeader: pageTitle
 });
 
 function getCookieValue(cookie) {

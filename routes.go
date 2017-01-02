@@ -63,7 +63,14 @@ func tokenRoute(w http.ResponseWriter, req *http.Request) (err error) {
 	decoder := json.NewDecoder(req.Body)
 	decoder.Decode(&ud)
 
-	userInfo, _ := GetUser(ud.UserName)
+	userInfo, err := GetUser(ud.UserName)
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		log.Printf("Authorization failed for user '%s' : %s", ud.UserName, err)
+		return
+	}
+
 	_, err = ValidateUser(userInfo, ud.Password)
 
 	if err != nil {

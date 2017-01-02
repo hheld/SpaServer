@@ -146,7 +146,9 @@ update msg model =
                     )
 
                 AUM.OnUserDeleted (Ok _) ->
-                    model
+                    { model
+                        | allUsersData = AUU.update allUsersMsg model.allUsersData
+                    }
                         ! [ Cmd.map MsgForAllUsersTable <|
                                 Api.getAllUsersCmd model
                           , Cmd.map MsgForUser <|

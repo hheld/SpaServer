@@ -4,8 +4,7 @@ import Http
 
 
 type Msg
-    = SetUserName String
-    | SetNewPwd String
+    = SetNewPwd String
     | SetCurrentPwd String
     | SetControlPwd String
     | ChangePwd

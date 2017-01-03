@@ -14,7 +14,7 @@ changePwdPage model =
     let
         chgPwdBtn : Html Msg
         chgPwdBtn =
-            if model.chgPwdData.userName /= "" && model.chgPwdData.oldPwd /= "" && model.chgPwdData.newPwd /= "" && model.chgPwdData.newPwd == model.chgPwdData.controlPwd then
+            if model.chgPwdData.oldPwd /= "" && model.chgPwdData.newPwd /= "" && model.chgPwdData.newPwd == model.chgPwdData.controlPwd then
                 button
                     [ class "btn btn-warning"
                     , onClick ChangePwd
@@ -49,8 +49,7 @@ notificationView chgPwdData =
 pwdForm : ChangePwdData -> Html Msg
 pwdForm chgPwdData =
     form [ class "form-horizontal" ]
-        [ inputField SetUserName identity "text" "User name" "User name" chgPwdData.userName
-        , inputField SetCurrentPwd identity "password" "Current password" "Current password" chgPwdData.oldPwd
+        [ inputField SetCurrentPwd identity "password" "Current password" "Current password" chgPwdData.oldPwd
         , inputField SetNewPwd identity "password" "New password" "New password" chgPwdData.newPwd
         , inputField SetControlPwd identity "password" "Repeat password" "Repeat password" chgPwdData.controlPwd
         ]

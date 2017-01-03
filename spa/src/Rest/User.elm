@@ -154,7 +154,7 @@ changePwdCmd model =
         encoder : JE.Value
         encoder =
             JE.object
-                [ ( "UserName", JE.string model.chgPwdData.userName )
+                [ ( "UserName", JE.string model.currentUser.userName )
                 , ( "NewPwd", JE.string model.chgPwdData.newPwd )
                 , ( "CurrentPwd", JE.string model.chgPwdData.oldPwd )
                 ]

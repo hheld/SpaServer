@@ -7,12 +7,6 @@ import ChangePwd.Messages exposing (Msg(..))
 update : Msg -> ChangePwdData -> ChangePwdData
 update msg model =
     case msg of
-        SetUserName userName ->
-            { model
-                | userName = userName
-                , notification = Nothing
-            }
-
         SetNewPwd pwd ->
             { model
                 | newPwd = pwd

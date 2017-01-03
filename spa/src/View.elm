@@ -12,6 +12,7 @@ import AllUsersTable.View exposing (allUsersPage)
 import AddUser.View exposing (addUserPage)
 import Tuple exposing (first, second)
 import UnauthorizedPage.View exposing (unauthorizedPage)
+import ChangePwd.View exposing (changePwdPage)
 
 
 view : Model -> Html Msg
@@ -25,6 +26,10 @@ page model =
         isAdmin : Bool
         isAdmin =
             List.member "admin" model.currentUser.roles
+
+        isLoggedIn : Bool
+        isLoggedIn =
+            model.csrfToken /= ""
 
         content =
             case model.route of
@@ -40,6 +45,12 @@ page model =
                 Just AddUserRoute ->
                     if isAdmin then
                         Html.map Messages.MsgForAddUser <| addUserPage model.addUserData
+                    else
+                        unauthorizedPage model
+
+                Just ChangePwdRoute ->
+                    if isLoggedIn then
+                        Html.map Messages.MsgForChangePwd <| changePwdPage model
                     else
                         unauthorizedPage model
 
@@ -82,14 +93,16 @@ type alias TabInfo =
     { route : String
     , tabTitle : String
     , adminOnly : Bool
+    , loggedInOnly : Bool
     }
 
 
 tabInfos : List TabInfo
 tabInfos =
-    [ { route = "#", tabTitle = "Home", adminOnly = False }
-    , { route = "#users", tabTitle = "Users", adminOnly = True }
-    , { route = "#newUser", tabTitle = "Add user", adminOnly = True }
+    [ { route = "#", tabTitle = "Home", adminOnly = False, loggedInOnly = False }
+    , { route = "#users", tabTitle = "Users", adminOnly = True, loggedInOnly = True }
+    , { route = "#newUser", tabTitle = "Add user", adminOnly = True, loggedInOnly = True }
+    , { route = "#changePwd", tabTitle = "Change password", adminOnly = False, loggedInOnly = True }
     ]
 
 
@@ -114,6 +127,12 @@ isTabActive model { route, tabTitle, adminOnly } =
             else
                 False
 
+        Just ChangePwdRoute ->
+            if route == "#changePwd" then
+                True
+            else
+                False
+
         Nothing ->
             False
 
@@ -124,6 +143,10 @@ navigation model =
         isAdmin : Bool
         isAdmin =
             List.member "admin" model.currentUser.roles
+
+        isLoggedIn : Bool
+        isLoggedIn =
+            model.csrfToken /= ""
 
         tabClass : TabInfo -> String
         tabClass ti =
@@ -136,7 +159,14 @@ navigation model =
         filteredTabsInfos =
             List.filter
                 (\ti ->
-                    isAdmin || not ti.adminOnly
+                    if isAdmin then
+                        True
+                    else if ti.adminOnly then
+                        False
+                    else if ti.loggedInOnly then
+                        isLoggedIn
+                    else
+                        True
                 )
                 tabInfos
 

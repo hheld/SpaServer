@@ -17,6 +17,8 @@ import AllUsersTable.Update as AUU
 import AllUsersTable.Messages as AUM
 import AddUser.Messages as AddUM
 import AddUser.Update as AddUU
+import ChangePwd.Messages as CPM
+import ChangePwd.Update as CPU
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -180,5 +182,19 @@ update msg model =
                 _ ->
                     { model
                         | addUserData = AddUU.update addUserMsg model.addUserData
+                    }
+                        ! [ Cmd.none ]
+
+        MsgForChangePwd chgPwdMsg ->
+            case chgPwdMsg of
+                CPM.ChangePwd ->
+                    model
+                        ! [ Cmd.map MsgForChangePwd <|
+                                Api.changePwdCmd model
+                          ]
+
+                _ ->
+                    { model
+                        | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
                     }
                         ! [ Cmd.none ]

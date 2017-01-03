@@ -5,6 +5,7 @@ import User.Model as User exposing (User)
 import Login.Model as Login exposing (LoginData)
 import AllUsersTable.Model as AllUsers exposing (AllUsersData)
 import AddUser.Model as AddUser exposing (AddUserData)
+import ChangePwd.Model as ChgPwd exposing (ChangePwdData)
 
 
 type alias Model =
@@ -15,6 +16,7 @@ type alias Model =
     , loginData : LoginData
     , allUsersData : AllUsersData
     , addUserData : AddUserData
+    , chgPwdData : ChangePwdData
     }
 
 
@@ -27,4 +29,5 @@ initialModel route csrfToken pageHeader =
     , loginData = Login.emptyLoginData
     , allUsersData = AllUsers.emptyAllUsers
     , addUserData = AddUser.emptyAddUserData
+    , chgPwdData = ChgPwd.emptyChangePwd
     }

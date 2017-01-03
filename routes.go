@@ -187,3 +187,28 @@ func deleteUserRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return DeleteUser(ud.UserName)
 }
+
+func changePwdRoute(w http.ResponseWriter, req *http.Request) (err error) {
+	if req.Method != "POST" {
+		return errors.New("Update password endpoint only accepts POST requests!")
+	}
+
+	pwdData := struct {
+		UserName   string
+		NewPwd     string
+		CurrentPwd string
+	}{}
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.Decode(&pwdData)
+
+	err = ChangePassword(pwdData.UserName, pwdData.CurrentPwd, pwdData.NewPwd)
+
+	json.NewEncoder(w).Encode(struct {
+		Success bool
+	}{
+		Success: err == nil,
+	})
+
+	return
+}

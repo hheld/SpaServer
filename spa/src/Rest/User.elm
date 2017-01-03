@@ -8,6 +8,7 @@ import Json.Decode as JD
 import Json.Encode as JE
 import AllUsersTable.Messages as AM
 import AddUser.Messages as AddUM
+import ChangePwd.Messages as CPM
 
 
 userInfoUrl : String
@@ -33,6 +34,11 @@ addUserUrl =
 deleteUserUrl : String
 deleteUserUrl =
     "/deleteUser"
+
+
+changePwdUrl : String
+changePwdUrl =
+    "/changePwd"
 
 
 getCurrentUserCmd : Model -> Cmd UM.Msg
@@ -140,3 +146,28 @@ deleteUserCmd model userName =
                 }
     in
         Http.send AM.OnUserDeleted request
+
+
+changePwdCmd : Model -> Cmd CPM.Msg
+changePwdCmd model =
+    let
+        encoder : JE.Value
+        encoder =
+            JE.object
+                [ ( "UserName", JE.string model.chgPwdData.userName )
+                , ( "NewPwd", JE.string model.chgPwdData.newPwd )
+                , ( "CurrentPwd", JE.string model.chgPwdData.oldPwd )
+                ]
+
+        request =
+            Http.request
+                { method = "POST"
+                , headers = [ Http.header "X-Csrf-Token" model.csrfToken ]
+                , url = changePwdUrl
+                , expect = Http.expectString
+                , timeout = Nothing
+                , withCredentials = False
+                , body = Http.jsonBody encoder
+                }
+    in
+        Http.send CPM.OnPwdChanged request

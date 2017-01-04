@@ -8,7 +8,7 @@
     "watch": "NODE_ENV=debug webpack --watch"
   },
   "author": "Harald Held",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.7",
     "css-loader": "^0.26.0",

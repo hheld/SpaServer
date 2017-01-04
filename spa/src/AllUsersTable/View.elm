@@ -1,8 +1,8 @@
 module AllUsersTable.View exposing (..)
 
-import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, button)
-import Html.Attributes exposing (class, type_, classList)
-import Html.Events exposing (onClick)
+import Html exposing (Html, div, text, table, thead, tbody, th, tr, td, form, button, span, ul, li, a)
+import Html.Attributes exposing (class, type_, classList, attribute)
+import Html.Events exposing (onClick, onWithOptions)
 import Model exposing (Model)
 import AllUsersTable.Messages exposing (Msg(..))
 import AllUsersTable.Model exposing (AllUsersData)
@@ -36,25 +36,17 @@ usersTable allUsers currentUser =
             List.map
                 (\u ->
                     tr
-                        [ onClick (OnRowClicked u)
-                        , classList
+                        [ classList
                             [ ( "info", u == Maybe.withDefault emptyUser allUsers.selectedUser )
                             ]
                         ]
-                        [ td [] [ text u.userName ]
-                        , td [] [ text u.firstName ]
-                        , td [] [ text u.lastName ]
-                        , td [] [ text u.email ]
-                        , td [] (roleLabels u.roles)
+                        [ td [ onClick (OnRowClicked u) ] [ text u.userName ]
+                        , td [ onClick (OnRowClicked u) ] [ text u.firstName ]
+                        , td [ onClick (OnRowClicked u) ] [ text u.lastName ]
+                        , td [ onClick (OnRowClicked u) ] [ text u.email ]
+                        , td [ onClick (OnRowClicked u) ] (roleLabels u.roles)
                         , td []
-                            [ if u /= currentUser then
-                                button
-                                    [ class "btn btn-danger btn-xs"
-                                    , onClick <| DeleteUser u.userName
-                                    ]
-                                    [ text "Delete" ]
-                              else
-                                text ""
+                            [ userActions u (u == currentUser)
                             ]
                         ]
                 )
@@ -69,11 +61,42 @@ usersTable allUsers currentUser =
                     , th [] [ text "Last name" ]
                     , th [] [ text "Email" ]
                     , th [] [ text "Roles" ]
-                    , th [] [ text "Actions" ]
+                    , th [] [ text "" ]
                     ]
                 , tbody []
                     rows
                 ]
+            ]
+
+
+userActions : User -> Bool -> Html Msg
+userActions user isCurrentUser =
+    let
+        actions : List (Html Msg)
+        actions =
+            [ if not isCurrentUser then
+                li []
+                    [ a
+                        [ onClick <| DeleteUser user.userName
+                        ]
+                        [ text "Delete"
+                        ]
+                    ]
+              else
+                text ""
+            ]
+    in
+        div [ class "dropdown" ]
+            [ button
+                [ class "btn btn-default btn-xs dropdown-toggle"
+                , type_ "button"
+                , attribute "data-toggle" "dropdown"
+                ]
+                [ text "Actions"
+                , span [ class "caret" ] []
+                ]
+            , ul [ class "dropdown-menu" ]
+                actions
             ]
 
 

@@ -204,11 +204,5 @@ func changePwdRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	err = ChangePassword(pwdData.UserName, pwdData.CurrentPwd, pwdData.NewPwd)
 
-	json.NewEncoder(w).Encode(struct {
-		Success bool
-	}{
-		Success: err == nil,
-	})
-
 	return
 }

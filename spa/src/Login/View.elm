@@ -1,7 +1,7 @@
 module Login.View exposing (..)
 
 import Html exposing (Html, div, text, input, label, form, button, img, h3, h6, span, strong)
-import Html.Attributes exposing (class, type_, placeholder, value, defaultValue, src, style)
+import Html.Attributes exposing (class, type_, placeholder, value, src, style)
 import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
 import Login.Messages exposing (Msg(..))
@@ -71,7 +71,6 @@ loginForm user =
                     , class "form-control"
                     , placeholder "User name"
                     , onInput SetUserName
-                    , defaultValue user.userName
                     ]
                     []
                 ]

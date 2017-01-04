@@ -22,7 +22,7 @@ update msg loginData =
             ( emptyLoginData, Cmd.none )
 
         OnGetToken (Ok token) ->
-            ( loginData, Cmd.none )
+            ( emptyLoginData, Cmd.none )
 
         OnGetToken (Err err) ->
             ( loginData, Cmd.none )

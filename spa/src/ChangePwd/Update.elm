@@ -2,6 +2,7 @@ module ChangePwd.Update exposing (..)
 
 import ChangePwd.Model exposing (ChangePwdData, emptyChangePwd)
 import ChangePwd.Messages exposing (Msg(..))
+import Http
 
 
 update : Msg -> ChangePwdData -> ChangePwdData
@@ -28,11 +29,24 @@ update msg model =
             model
 
         OnPwdChanged (Ok _) ->
-            { emptyChangePwd
+            { model
                 | notification = Just ( "Password changed successfully", True )
             }
 
         OnPwdChanged (Err err) ->
-            { model
-                | notification = Just ( toString err, False )
-            }
+            let
+                errMsg : String
+                errMsg =
+                    case err of
+                        Http.BadStatus resp ->
+                            resp.body
+
+                        _ ->
+                            ""
+            in
+                { model
+                    | notification = Just ( errMsg, False )
+                }
+
+        ClearModel ->
+            emptyChangePwd

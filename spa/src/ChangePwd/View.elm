@@ -38,6 +38,7 @@ notificationView chgPwdData =
                 [ classList
                     [ ( "alert", True )
                     , ( "alert-danger", not ok )
+                    , ( "alert-success", ok )
                     ]
                 ]
                 [ text msg ]

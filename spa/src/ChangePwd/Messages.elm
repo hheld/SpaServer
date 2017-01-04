@@ -9,3 +9,4 @@ type Msg
     | SetControlPwd String
     | ChangePwd
     | OnPwdChanged (Result Http.Error String)
+    | ClearModel

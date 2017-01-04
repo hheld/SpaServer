@@ -1,7 +1,7 @@
 module ViewHelpers exposing (..)
 
 import Html exposing (Html, text, span, label, div, input)
-import Html.Attributes exposing (class, style, defaultValue, placeholder, type_)
+import Html.Attributes exposing (class, style, placeholder, type_, value)
 import Html.Events exposing (onInput)
 import Regex
 
@@ -36,7 +36,7 @@ inputField msgOnInput inputTransform inputType labelText placeholderVal defaultV
                 [ type_ inputType
                 , class "form-control"
                 , placeholder placeholderVal
-                , defaultValue defaultVal
+                , value defaultVal
                 , onInput (msgOnInput << inputTransform)
                 ]
                 []

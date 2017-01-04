@@ -19,6 +19,7 @@ import AddUser.Messages as AddUM
 import AddUser.Update as AddUU
 import ChangePwd.Messages as CPM
 import ChangePwd.Update as CPU
+import Task exposing (Task, succeed, perform)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,6 +35,10 @@ update msg model =
                         Just AllUsersRoute ->
                             Api.getAllUsersCmd model
                                 |> Cmd.map MsgForAllUsersTable
+
+                        Just ChangePwdRoute ->
+                            Cmd.map MsgForChangePwd <|
+                                perform (\_ -> CPM.ClearModel) (succeed never)
 
                         _ ->
                             Cmd.none

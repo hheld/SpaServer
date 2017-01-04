@@ -16,3 +16,5 @@ type Msg
     | UpdateUser
     | DeleteUser String
     | OnUserDeleted (Result Http.Error String)
+    | ResetPwd String
+    | OnPwdReset (Result Http.Error String)

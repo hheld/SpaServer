@@ -269,3 +269,28 @@ func ChangePassword(userName, oldPassword, newPassword string) error {
 
 	return AddDataToCollection(userCollection, GetUserID(&u.User), updatedRawUser)
 }
+
+// ResetPassword resets the given user's password to the user name.
+func ResetPassword(userName string) error {
+	u, err := getRawUser(userName)
+
+	if err != nil {
+		return err
+	}
+
+	hashedPwd, err := bcrypt.GenerateFromPassword([]byte(u.UserName), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	u.PasswordHash = hashedPwd
+
+	updatedRawUser, err := u.encode()
+
+	if err != nil {
+		return err
+	}
+
+	return AddDataToCollection(userCollection, GetUserID(&u.User), updatedRawUser)
+}

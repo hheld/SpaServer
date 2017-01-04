@@ -41,6 +41,11 @@ changePwdUrl =
     "/changePwd"
 
 
+resetPwdUrl : String
+resetPwdUrl =
+    "/resetPwd"
+
+
 getCurrentUserCmd : Model -> Cmd UM.Msg
 getCurrentUserCmd model =
     let
@@ -171,3 +176,26 @@ changePwdCmd model =
                 }
     in
         Http.send CPM.OnPwdChanged request
+
+
+resetPwdCmd : Model -> String -> Cmd AM.Msg
+resetPwdCmd model userName =
+    let
+        encoder : JE.Value
+        encoder =
+            JE.object
+                [ ( "UserName", JE.string userName )
+                ]
+
+        request =
+            Http.request
+                { method = "POST"
+                , headers = [ Http.header "X-Csrf-Token" model.csrfToken ]
+                , url = resetPwdUrl
+                , expect = Http.expectString
+                , timeout = Nothing
+                , withCredentials = False
+                , body = Http.jsonBody encoder
+                }
+    in
+        Http.send AM.OnPwdReset request

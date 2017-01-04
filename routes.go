@@ -206,3 +206,20 @@ func changePwdRoute(w http.ResponseWriter, req *http.Request) (err error) {
 
 	return
 }
+
+func resetPwdRoute(w http.ResponseWriter, req *http.Request) (err error) {
+	if req.Method != "POST" {
+		return errors.New("Reset password endpoint only accepts POST requests!")
+	}
+
+	data := struct {
+		UserName string
+	}{}
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.Decode(&data)
+
+	err = ResetPassword(data.UserName)
+
+	return
+}

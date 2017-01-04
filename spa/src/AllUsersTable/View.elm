@@ -84,6 +84,13 @@ userActions user isCurrentUser =
                     ]
               else
                 text ""
+            , li []
+                [ a
+                    [ onClick <| ResetPwd user.userName
+                    ]
+                    [ text "Reset password"
+                    ]
+                ]
             ]
     in
         div [ class "dropdown" ]

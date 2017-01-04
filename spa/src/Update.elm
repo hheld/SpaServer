@@ -162,6 +162,14 @@ update msg model =
                                 Api.getCurrentUserCmd model
                           ]
 
+                AUM.ResetPwd userName ->
+                    { model
+                        | allUsersData = AUU.update allUsersMsg model.allUsersData
+                    }
+                        ! [ Cmd.map MsgForAllUsersTable <|
+                                Api.resetPwdCmd model userName
+                          ]
+
                 _ ->
                     ( { model
                         | allUsersData = AUU.update allUsersMsg model.allUsersData

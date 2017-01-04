@@ -111,3 +111,12 @@ update msg allUsers =
 
         OnUserDeleted (Err _) ->
             allUsers
+
+        ResetPwd _ ->
+            allUsers
+
+        OnPwdReset (Ok _) ->
+            allUsers
+
+        OnPwdReset (Err _) ->
+            allUsers

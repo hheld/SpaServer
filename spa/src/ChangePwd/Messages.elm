@@ -10,3 +10,4 @@ type Msg
     | ChangePwd
     | OnPwdChanged (Result Http.Error String)
     | ClearModel
+    | ClearNotification

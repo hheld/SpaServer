@@ -11,13 +11,11 @@ update msg model =
         SetNewPwd pwd ->
             { model
                 | newPwd = pwd
-                , notification = Nothing
             }
 
         SetCurrentPwd pwd ->
             { model
                 | oldPwd = pwd
-                , notification = Nothing
             }
 
         SetControlPwd pwd ->
@@ -50,3 +48,8 @@ update msg model =
 
         ClearModel ->
             emptyChangePwd
+
+        ClearNotification ->
+            { model
+                | notification = Nothing
+            }

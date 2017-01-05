@@ -19,7 +19,9 @@ import AddUser.Messages as AddUM
 import AddUser.Update as AddUU
 import ChangePwd.Messages as CPM
 import ChangePwd.Update as CPU
-import Task exposing (Task, succeed, perform)
+import Task exposing (Task, succeed, perform, andThen)
+import Time exposing (second)
+import Process exposing (sleep)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -204,6 +206,25 @@ update msg model =
                     model
                         ! [ Cmd.map MsgForChangePwd <|
                                 Api.changePwdCmd model
+                          ]
+
+                CPM.OnPwdChanged (Ok _) ->
+                    { model
+                        | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
+                    }
+                        ! [ sleep (10 * second)
+                                |> andThen (\_ -> succeed CPM.ClearNotification)
+                                |> perform (\_ -> CPM.ClearModel)
+                                |> Cmd.map MsgForChangePwd
+                          ]
+
+                CPM.OnPwdChanged (Err err) ->
+                    { model
+                        | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
+                    }
+                        ! [ sleep (10 * second)
+                                |> perform (\_ -> CPM.ClearNotification)
+                                |> Cmd.map MsgForChangePwd
                           ]
 
                 _ ->

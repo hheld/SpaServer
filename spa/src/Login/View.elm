@@ -1,6 +1,6 @@
 module Login.View exposing (..)
 
-import Html exposing (Html, div, text, input, form, button, img, nav, a, p)
+import Html exposing (Html, div, span, text, input, form, button, img, nav, a, p)
 import Html.Attributes exposing (class, type_, placeholder, value, src, style, href, height)
 import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
@@ -45,6 +45,8 @@ userInfo user =
     , p
         [ class "navbar-text" ]
         [ text <| user.email ]
+    , span [ style [ ( "margin-right", "10px" ) ] ]
+        (roleLabels user.roles)
     , button
         [ class "btn btn-default navbar-btn"
         , type_ "button"

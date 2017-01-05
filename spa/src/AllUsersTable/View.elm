@@ -137,11 +137,17 @@ userEditor user =
                 ""
                 user.roles
             )
-        , button
-            [ type_ "button"
-            , class "btn btn-warning"
-            , onClick UpdateUser
-            ]
-            [ text "Update user"
+        , div
+            [ class "form-group" ]
+            [ div
+                [ class "col-sm-offset-2" ]
+                [ button
+                    [ type_ "button"
+                    , class "btn btn-warning"
+                    , onClick UpdateUser
+                    ]
+                    [ text "Update user"
+                    ]
+                ]
             ]
         ]

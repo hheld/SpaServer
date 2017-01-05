@@ -1,7 +1,7 @@
 module Login.View exposing (..)
 
-import Html exposing (Html, div, text, input, label, form, button, img, h3, h6, span, strong)
-import Html.Attributes exposing (class, type_, placeholder, value, src, style)
+import Html exposing (Html, div, text, input, form, button, img, nav, a, p)
+import Html.Attributes exposing (class, type_, placeholder, value, src, style, href, height)
 import Html.Events exposing (onClick, onInput)
 import User.Model exposing (User)
 import Login.Messages exposing (Msg(..))
@@ -11,87 +11,79 @@ import ViewHelpers exposing (..)
 
 loginPage : User -> String -> Html Msg
 loginPage user csrfToken =
-    if csrfToken /= "" then
-        userInfo user
-    else
-        loginForm user
-
-
-userInfo : User -> Html Msg
-userInfo user =
-    div
-        [ class "container-fluid well well-sm" ]
-        [ div
-            [ class "row" ]
+    let
+        content =
+            if csrfToken /= "" then
+                userInfo user
+            else
+                loginForm user
+    in
+        nav
+            [ class "navbar navbar-inverse navbar-fixed-top" ]
             [ div
-                [ class "col-md-4" ]
-                [ gravatarImg user.email
-                , div
-                    [ class "row" ]
-                    [ div
-                        [ class "col-xs-12" ]
-                        (roleLabels user.roles)
-                    ]
-                ]
-            , div
-                [ class "col-md-4" ]
-                [ h3 [] [ text user.userName ]
-                , h6 []
-                    [ strong [] [ text "Full name: " ]
-                    , text (user.firstName ++ " " ++ user.lastName)
-                    ]
-                , h6 []
-                    [ strong [] [ text "Email: " ]
-                    , text user.email
-                    ]
-                ]
-            , div
-                [ class "col-md-4" ]
-                [ button
-                    [ class "btn btn-default"
-                    , type_ "button"
-                    , onClick DoLogout
-                    ]
-                    [ text "Logout" ]
+                [ class "container" ]
+                [ div
+                    [ class "navbar-header" ]
+                    content
                 ]
             ]
+
+
+userInfo : User -> List (Html Msg)
+userInfo user =
+    [ a
+        [ class "navbar-brand"
+        , href "#"
         ]
+        [ gravatarImg user.email ]
+    , p
+        [ class "navbar-text" ]
+        [ text <| "Signed in as " ++ user.userName ]
+    , p
+        [ class "navbar-text" ]
+        [ text <| user.firstName ++ " " ++ user.lastName ]
+    , p
+        [ class "navbar-text" ]
+        [ text <| user.email ]
+    , button
+        [ class "btn btn-default navbar-btn"
+        , type_ "button"
+        , onClick DoLogout
+        ]
+        [ text "Logout" ]
+    ]
 
 
-loginForm : User -> Html Msg
+loginForm : User -> List (Html Msg)
 loginForm user =
-    div
-        [ class "formContainer container-fluid well" ]
-        [ form
-            []
-            [ div [ class "form-group" ]
-                [ label [] [ text "User name" ]
-                , input
-                    [ type_ "text"
-                    , class "form-control"
-                    , placeholder "User name"
-                    , onInput SetUserName
-                    ]
-                    []
+    [ form
+        [ class "navbar-form navbar-left" ]
+        [ div [ class "form-group" ]
+            [ input
+                [ type_ "text"
+                , class "form-control"
+                , placeholder "User name"
+                , onInput SetUserName
                 ]
-            , div [ class "form-group" ]
-                [ label [] [ text "Password" ]
-                , input
-                    [ type_ "password"
-                    , class "form-control"
-                    , placeholder "Password"
-                    , onInput SetPassword
-                    ]
-                    []
-                ]
-            , button
-                [ class "btn btn-default"
-                , type_ "button"
-                , onClick DoLogin
-                ]
-                [ text "Login" ]
+                []
             ]
+        , div [ class "form-group" ]
+            [ input
+                [ type_ "password"
+                , class "form-control"
+                , placeholder "Password"
+                , onInput SetPassword
+                ]
+                []
+            ]
+        , button
+            [ class "btn btn-default"
+            , type_ "button"
+            , onClick DoLogin
+            ]
+            [ text "Login" ]
         ]
+    ]
 
 
 gravatarImg : String -> Html Msg
@@ -104,5 +96,6 @@ gravatarImg email =
         img
             [ src imgUrl
             , class "img-circle"
+              -- , height 25
             ]
             []

@@ -64,26 +64,17 @@ outerLayout : Model -> Html Msg -> Html Msg
 outerLayout model content =
     div [ class "container-fluid" ]
         [ div
-            [ class "row" ]
-            [ div
-                [ class "col-xs-10" ]
-                [ div
-                    [ class "page-header" ]
-                    [ h1 []
-                        [ text model.pageHeader ]
-                    ]
-                , div [ class "panel panel-default" ]
-                    [ div [ class "panel-heading" ]
-                        [ navigation model
-                        ]
-                    , div [ class "panel-body" ]
-                        [ content
-                        ]
-                    ]
+            [ class "page-header" ]
+            [ h1 []
+                [ text model.pageHeader ]
+            ]
+        , Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
+        , div [ class "panel panel-default" ]
+            [ div [ class "panel-heading" ]
+                [ navigation model
                 ]
-            , div
-                [ class "pull-right col-xs-2" ]
-                [ Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
+            , div [ class "panel-body" ]
+                [ content
                 ]
             ]
         ]

@@ -2,3 +2,7 @@
   overflow-x: visible !important;
   overflow-y: visible !important;
 }
+
+body {
+    padding-top: 80px;
+}

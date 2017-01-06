@@ -34,3 +34,15 @@ initialModel route csrfToken pageHeader =
     , chgPwdData = ChgPwd.emptyChangePwd
     , notificationData = NotificationArea.emptyNotification
     }
+
+
+clearModel : Model -> Model
+clearModel model =
+    { model
+        | currentUser = User.emptyUser
+        , loginData = Login.emptyLoginData
+        , allUsersData = AllUsers.emptyAllUsers
+        , addUserData = AddUser.emptyAddUserData
+        , chgPwdData = ChgPwd.emptyChangePwd
+        , notificationData = NotificationArea.emptyNotification
+    }

@@ -111,10 +111,12 @@ update msg model =
                     let
                         ( updatedLoginData, c ) =
                             LU.update loginMsg model.loginData
+
+                        clearedModel =
+                            clearModel model
                     in
-                        ( { model
-                            | currentUser = emptyUser
-                            , loginData = updatedLoginData
+                        ( { clearedModel
+                            | loginData = updatedLoginData
                             , csrfToken = ""
                           }
                         , Cmd.map Messages.MsgForLogin c

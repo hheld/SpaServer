@@ -213,8 +213,9 @@ update msg model =
                         | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
                     }
                         ! [ sleep (10 * second)
-                                |> andThen (\_ -> succeed CPM.ClearNotification)
-                                |> perform (\_ -> CPM.ClearModel)
+                                |> perform (\_ -> CPM.ClearNotification)
+                                |> Cmd.map MsgForChangePwd
+                          , perform (\_ -> CPM.ClearModel) (succeed never)
                                 |> Cmd.map MsgForChangePwd
                           ]
 

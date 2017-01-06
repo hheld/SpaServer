@@ -206,7 +206,7 @@ update msg model =
                         | addUserData = AddUU.update addUserMsg model.addUserData
                     }
                         ! [ Navigation.newUrl "#users"
-                          , perform (\( a, b ) -> NM.AddTemporaryNotification b NMOD.Info a) (succeed ( "User added successfully", 10 * second ))
+                          , perform (\( a, b ) -> NM.AddTemporaryNotification b NMOD.Success a) (succeed ( "User added successfully", 10 * second ))
                                 |> Cmd.map MsgForNotifiation
                           ]
 

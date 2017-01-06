@@ -23,8 +23,8 @@ allUsersPage model =
                     text ""
     in
         div []
-            [ usersTable model.allUsersData model.currentUser
-            , editor
+            [ editor
+            , usersTable model.allUsersData model.currentUser
             ]
 
 

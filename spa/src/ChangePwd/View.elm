@@ -24,27 +24,9 @@ changePwdPage model =
                 text ""
     in
         div []
-            [ notificationView model.chgPwdData
-            , pwdForm model.chgPwdData
+            [ pwdForm model.chgPwdData
             , chgPwdBtn
             ]
-
-
-notificationView : ChangePwdData -> Html Msg
-notificationView chgPwdData =
-    case chgPwdData.notification of
-        Just ( msg, ok ) ->
-            div
-                [ classList
-                    [ ( "alert", True )
-                    , ( "alert-danger", not ok )
-                    , ( "alert-success", ok )
-                    ]
-                ]
-                [ text msg ]
-
-        Nothing ->
-            text ""
 
 
 pwdForm : ChangePwdData -> Html Msg

@@ -19,9 +19,22 @@ import AddUser.Messages as AddUM
 import AddUser.Update as AddUU
 import ChangePwd.Messages as CPM
 import ChangePwd.Update as CPU
-import Task exposing (Task, succeed, perform, andThen)
+import Task exposing (Task, succeed, perform)
 import Time exposing (second)
-import Process exposing (sleep)
+import NotificationArea.Messages as NM
+import NotificationArea.Update as NU
+import NotificationArea.Model as NMOD
+import Http
+
+
+httpErrToString : Http.Error -> String
+httpErrToString err =
+    case err of
+        Http.BadStatus resp ->
+            resp.body
+
+        _ ->
+            ""
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -192,7 +205,18 @@ update msg model =
                     { model
                         | addUserData = AddUU.update addUserMsg model.addUserData
                     }
-                        ! [ Navigation.newUrl "#users" ]
+                        ! [ Navigation.newUrl "#users"
+                          , perform (\( a, b ) -> NM.AddTemporaryNotification b NMOD.Info a) (succeed ( "User added successfully", 10 * second ))
+                                |> Cmd.map MsgForNotifiation
+                          ]
+
+                AddUM.OnUserAdded (Err err) ->
+                    { model
+                        | addUserData = AddUU.update addUserMsg model.addUserData
+                    }
+                        ! [ perform (\a -> NM.AddDismissableNotification NMOD.Error a) (succeed (httpErrToString err))
+                                |> Cmd.map MsgForNotifiation
+                          ]
 
                 _ ->
                     { model
@@ -212,9 +236,8 @@ update msg model =
                     { model
                         | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
                     }
-                        ! [ sleep (10 * second)
-                                |> perform (\_ -> CPM.ClearNotification)
-                                |> Cmd.map MsgForChangePwd
+                        ! [ perform (\( a, b ) -> NM.AddTemporaryNotification b NMOD.Info a) (succeed ( "Password changed successfully", 10 * second ))
+                                |> Cmd.map MsgForNotifiation
                           , perform (\_ -> CPM.ClearModel) (succeed never)
                                 |> Cmd.map MsgForChangePwd
                           ]
@@ -223,9 +246,8 @@ update msg model =
                     { model
                         | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
                     }
-                        ! [ sleep (10 * second)
-                                |> perform (\_ -> CPM.ClearNotification)
-                                |> Cmd.map MsgForChangePwd
+                        ! [ perform (\a -> NM.AddDismissableNotification NMOD.Error a) (succeed (httpErrToString err))
+                                |> Cmd.map MsgForNotifiation
                           ]
 
                 _ ->
@@ -233,3 +255,13 @@ update msg model =
                         | chgPwdData = CPU.update chgPwdMsg model.chgPwdData
                     }
                         ! [ Cmd.none ]
+
+        MsgForNotifiation notificationMsg ->
+            let
+                ( updatedNotificationData, cmd ) =
+                    NU.update notificationMsg model.notificationData
+            in
+                { model
+                    | notificationData = updatedNotificationData
+                }
+                    ! [ Cmd.map MsgForNotifiation cmd ]

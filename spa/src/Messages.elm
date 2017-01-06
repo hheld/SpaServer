@@ -6,6 +6,7 @@ import Login.Messages as LM
 import AllUsersTable.Messages as AUM
 import AddUser.Messages as AddUM
 import ChangePwd.Messages as CPM
+import NotificationArea.Messages as NM
 
 
 type Msg
@@ -16,3 +17,4 @@ type Msg
     | MsgForAllUsersTable AUM.Msg
     | MsgForAddUser AddUM.Msg
     | MsgForChangePwd CPM.Msg
+    | MsgForNotifiation NM.Msg

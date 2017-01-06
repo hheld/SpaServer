@@ -27,21 +27,9 @@ addUserPage model =
                 text ""
     in
         div []
-            [ errorMsgDisplay model.httpError
-            , userDataForm model.newUser model.password model.passwordControl
+            [ userDataForm model.newUser model.password model.passwordControl
             , addUserBtn
             ]
-
-
-errorMsgDisplay : Maybe String -> Html Msg
-errorMsgDisplay maybeErrMsg =
-    case maybeErrMsg of
-        Just errMsg ->
-            div [ class "alert alert-danger" ]
-                [ text errMsg ]
-
-        Nothing ->
-            text ""
 
 
 userDataForm : User -> String -> String -> Html Msg

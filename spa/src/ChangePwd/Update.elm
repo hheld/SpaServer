@@ -27,29 +27,10 @@ update msg model =
             model
 
         OnPwdChanged (Ok _) ->
-            { model
-                | notification = Just ( "Password changed successfully", True )
-            }
+            emptyChangePwd
 
         OnPwdChanged (Err err) ->
-            let
-                errMsg : String
-                errMsg =
-                    case err of
-                        Http.BadStatus resp ->
-                            resp.body
-
-                        _ ->
-                            ""
-            in
-                { model
-                    | notification = Just ( errMsg, False )
-                }
+            model
 
         ClearModel ->
             emptyChangePwd
-
-        ClearNotification ->
-            { model
-                | notification = Nothing
-            }

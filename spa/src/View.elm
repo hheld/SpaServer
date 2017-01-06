@@ -13,6 +13,7 @@ import AddUser.View exposing (addUserPage)
 import Tuple exposing (first, second)
 import UnauthorizedPage.View exposing (unauthorizedPage)
 import ChangePwd.View exposing (changePwdPage)
+import NotificationArea.View exposing (notificationArea)
 
 
 view : Model -> Html Msg
@@ -69,6 +70,7 @@ outerLayout model content =
                 [ text model.pageHeader ]
             ]
         , Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
+        , Html.map Messages.MsgForNotifiation <| notificationArea model.notificationData
         , div [ class "panel panel-default" ]
             [ div [ class "panel-heading" ]
                 [ navigation model

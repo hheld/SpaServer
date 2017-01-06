@@ -6,6 +6,7 @@ import Login.Model as Login exposing (LoginData)
 import AllUsersTable.Model as AllUsers exposing (AllUsersData)
 import AddUser.Model as AddUser exposing (AddUserData)
 import ChangePwd.Model as ChgPwd exposing (ChangePwdData)
+import NotificationArea.Model as NotificationArea exposing (NotificationData)
 
 
 type alias Model =
@@ -17,6 +18,7 @@ type alias Model =
     , allUsersData : AllUsersData
     , addUserData : AddUserData
     , chgPwdData : ChangePwdData
+    , notificationData : NotificationData
     }
 
 
@@ -30,4 +32,5 @@ initialModel route csrfToken pageHeader =
     , allUsersData = AllUsers.emptyAllUsers
     , addUserData = AddUser.emptyAddUserData
     , chgPwdData = ChgPwd.emptyChangePwd
+    , notificationData = NotificationArea.emptyNotification
     }

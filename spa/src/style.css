@@ -6,3 +6,20 @@
 body {
     padding-top: 80px;
 }
+
+.nav-stacked > li > a {
+    border-radius: 0;
+    background-color: #e5e5e5;
+}
+
+.nav-stacked > li.active > a {
+    background-color: #00428e;
+}
+
+.nav-stacked > li.active > a:focus {
+    background-color: #021f3f;
+}
+
+.nav-stacked > li.active > a:hover {
+    background-color: #588ac4;
+}

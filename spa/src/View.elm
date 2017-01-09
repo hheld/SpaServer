@@ -71,13 +71,12 @@ outerLayout model content =
             ]
         , Html.map Messages.MsgForLogin (loginPage model.currentUser model.csrfToken)
         , Html.map Messages.MsgForNotifiation <| notificationArea model.notificationData
-        , div [ class "panel panel-default" ]
-            [ div [ class "panel-heading" ]
+        , div [ class "row" ]
+            [ div [ class "col-xs-2" ]
                 [ navigation model
                 ]
-            , div [ class "panel-body" ]
-                [ content
-                ]
+            , div [ class "col-xs-10" ]
+                [ content ]
             ]
         ]
 
@@ -174,4 +173,4 @@ navigation model =
                 )
                 filteredTabsInfos
     in
-        ul [ class "nav nav-tabs" ] tabs
+        ul [ class "nav nav-pills nav-stacked" ] tabs

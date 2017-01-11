@@ -7,9 +7,10 @@ type alias AllUsersData =
     { allUsers : List User
     , selectedUser : Maybe User
     , originalSelectedUser : Maybe User
+    , filter : Maybe String
     }
 
 
 emptyAllUsers : AllUsersData
 emptyAllUsers =
-    AllUsersData [] Nothing Nothing
+    AllUsersData [] Nothing Nothing Nothing

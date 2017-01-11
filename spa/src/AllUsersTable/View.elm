@@ -8,7 +8,7 @@ import AllUsersTable.Messages exposing (Msg(..))
 import AllUsersTable.Model exposing (AllUsersData)
 import User.Model exposing (User, emptyUser)
 import ViewHelpers exposing (..)
-import String exposing (split)
+import String exposing (split, contains)
 
 
 allUsersPage : Model -> Html Msg
@@ -23,7 +23,8 @@ allUsersPage model =
                     text ""
     in
         div []
-            [ usersTable model.allUsersData model.currentUser
+            [ filterField model.allUsersData.filter
+            , usersTable model.allUsersData model.currentUser
             , editor
             ]
 
@@ -50,7 +51,25 @@ usersTable allUsers currentUser =
                             ]
                         ]
                 )
-                allUsers.allUsers
+            <|
+                List.filter
+                    (\u ->
+                        case allUsers.filter of
+                            Nothing ->
+                                True
+
+                            Just f ->
+                                if
+                                    contains f u.userName
+                                        || contains f u.firstName
+                                        || contains f u.lastName
+                                        || contains f u.email
+                                then
+                                    True
+                                else
+                                    False
+                    )
+                    allUsers.allUsers
     in
         div [ class "table-responsive" ]
             [ table
@@ -150,4 +169,27 @@ userEditor user =
                     ]
                 ]
             ]
+        ]
+
+
+filterField : Maybe String -> Html Msg
+filterField maybeFilter =
+    form [ class "form-horizontal" ]
+        [ inputField SetFilter
+            (\f ->
+                if f == "" then
+                    Nothing
+                else
+                    Just f
+            )
+            "text"
+            "Filter"
+            "Filter"
+            (case maybeFilter of
+                Just s ->
+                    s
+
+                Nothing ->
+                    ""
+            )
         ]

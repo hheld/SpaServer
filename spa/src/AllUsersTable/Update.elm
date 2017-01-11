@@ -120,3 +120,8 @@ update msg allUsers =
 
         OnPwdReset (Err _) ->
             allUsers
+
+        SetFilter f ->
+            { allUsers
+                | filter = f
+            }

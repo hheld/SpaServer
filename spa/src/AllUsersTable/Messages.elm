@@ -18,3 +18,4 @@ type Msg
     | OnUserDeleted (Result Http.Error String)
     | ResetPwd String
     | OnPwdReset (Result Http.Error String)
+    | SetFilter (Maybe String)

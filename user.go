@@ -20,6 +20,13 @@ type User struct {
 	Roles     []string
 }
 
+// ByUserName implements sort.Interface for []User based on field UserName
+type ByUserName []User
+
+func (u ByUserName) Len() int           { return len(u) }
+func (u ByUserName) Swap(i, j int)      { u[i], u[j] = u[j], u[i] }
+func (u ByUserName) Less(i, j int) bool { return u[i].UserName < u[j].UserName }
+
 type user struct {
 	User
 	ID           []byte // This is sha1 sum of UserName

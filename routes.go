@@ -8,6 +8,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -153,6 +154,8 @@ func allUsersRoute(w http.ResponseWriter, req *http.Request) (err error) {
 	if err != nil {
 		return
 	}
+
+	sort.Sort(ByUserName(users))
 
 	return json.NewEncoder(w).Encode(users)
 }

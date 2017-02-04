@@ -15,10 +15,10 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(css|scss)$/,
-        loaders: [
+        use: [
           'style-loader',
           'css-loader',
         ]
@@ -31,7 +31,7 @@ module.exports = {
       {
         test:    /\.elm$/,
         exclude: [/elm-stuff/, /node_modules/],
-        loader:  'elm-webpack' + (process.env.NODE_ENV === 'debug' ? '?debug=true' : ''),
+        loader:  'elm-webpack-loader' + (process.env.NODE_ENV === 'debug' ? '?debug=true' : ''),
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,

@@ -14,10 +14,10 @@
     "css-loader": "^0.26.1",
     "elm-webpack-loader": "^4.2.0",
     "file-loader": "^0.10.0",
-    "html-webpack-plugin": "^2.26.0",
+    "html-webpack-plugin": "^2.28.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^2.2.1"
   },
   "dependencies": {
     "glob": "^7.1.1",

@@ -3,3 +3,4 @@ key.pem
 data.db
 dist/
 /spa/npm-debug.log
+debug

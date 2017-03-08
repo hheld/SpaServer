@@ -8,7 +8,6 @@ import Model exposing (Model, initialModel)
 import Routing
 import View exposing (view)
 import User.Messages as UM
-import AllUsersTable.Messages as AUM
 import Rest.User as Api
 import Js exposing (newCookieValue)
 
